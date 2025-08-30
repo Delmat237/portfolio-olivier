@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 import { z } from 'zod'
+import educationData  from '@/data/education/educationData'
 
 // Schema de validation pour les données du formulaire
 const contactSchema = z.object({

@@ -1,0 +1,144 @@
+import { Building, Calculator, Wrench, Users } from 'lucide-react'
+
+
+const skillCategories = [
+  {
+    id: 'civil-engineering',
+    title: 'Génie Civil',
+    icon: Building,
+    color: 'from-civil-500 to-blue-600',
+    bgColor: 'from-civil-50 to-blue-50',
+    skills: [
+      {
+        name: 'Maçonnerie',
+        level: 85,
+        description: 'Construction et rénovation, techniques traditionnelles et modernes'
+      },
+      {
+        name: 'Plomberie',
+        level: 80,
+        description: 'Installation et maintenance des systèmes hydrauliques'
+      },
+      {
+        name: 'Installations électriques',
+        level: 75,
+        description: 'Électricité de base, installations domestiques'
+      },
+      {
+        name: 'Conception structurelle',
+        level: 70,
+        description: 'Calcul et dimensionnement des structures'
+      },
+      {
+        name: 'Béton armé',
+        level: 75,
+        description: 'Conception et calcul des éléments en béton armé'
+      }
+    ]
+  },
+  {
+    id: 'mathematics',
+    title: 'Mathématiques',
+    icon: Calculator,
+    color: 'from-math-500 to-purple-600',
+    bgColor: 'from-math-50 to-purple-50',
+    skills: [
+      {
+        name: 'Analyse mathématique',
+        level: 90,
+        description: 'Calcul différentiel et intégral, équations différentielles'
+      },
+      {
+        name: 'Algèbre linéaire',
+        level: 85,
+        description: 'Espaces vectoriels, matrices, transformations linéaires'
+      },
+      {
+        name: 'Analyse numérique',
+        level: 80,
+        description: 'Méthodes numériques, approximations, résolution d\'équations'
+      },
+      {
+        name: 'Probabilités & Statistiques',
+        level: 75,
+        description: 'Modélisation stochastique, analyse de données'
+      },
+      {
+        name: 'Optimisation',
+        level: 70,
+        description: 'Recherche opérationnelle, programmation linéaire'
+      }
+    ]
+  },
+  {
+    id: 'technical',
+    title: 'Compétences techniques',
+    icon: Wrench,
+    color: 'from-orange-500 to-red-600',
+    bgColor: 'from-orange-50 to-red-50',
+    skills: [
+      {
+        name: 'Forage et puits',
+        level: 80,
+        description: 'Creusage et aménagement des forages et des puits'
+      },
+      {
+        name: 'Gestion d\'équipements',
+        level: 75,
+        description: 'Moulinex à écraser (maïs, arachides, tomates, mil, sorgho)'
+      },
+      {
+        name: 'Transport',
+        level: 70,
+        description: 'Conduite et gestion de moto-taxis'
+      },
+      {
+        name: 'AutoCAD',
+        level: 65,
+        description: 'Dessin technique et plans de construction'
+      },
+      {
+        name: 'Topographie',
+        level: 70,
+        description: 'Relevés topographiques, nivellement'
+      }
+    ]
+  },
+  {
+    id: 'soft-skills',
+    title: 'Compétences transversales',
+    icon: Users,
+    color: 'from-green-500 to-teal-600',
+    bgColor: 'from-green-50 to-teal-50',
+    skills: [
+      {
+        name: 'Enseignement',
+        level: 85,
+        description: 'Répétiteur en mathématiques (niveaux 1 et 2)'
+      },
+      {
+        name: 'Travail en équipe',
+        level: 80,
+        description: 'Collaboration efficace dans les projets de groupe'
+      },
+      {
+        name: 'Communication',
+        level: 75,
+        description: 'Expression claire en français, notions d\'anglais technique'
+      },
+      {
+        name: 'Résolution de problèmes',
+        level: 85,
+        description: 'Approche analytique et créative'
+      },
+      {
+        name: 'Adaptabilité',
+        level: 80,
+        description: 'Capacité d\'apprentissage et d\'adaptation rapide'
+      }
+    ]
+  }
+]
+
+
+export default skillCategories;
