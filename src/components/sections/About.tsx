@@ -25,7 +25,7 @@ export default function About() {
                 À propos de <span className="gradient-text">moi</span>
               </h2>
               <p className="text-gray-600 mb-6">
-                Je suis Olivier Mogonel, étudiant ingénieur en Génie Civil à l`&#39;`École Nationale Supérieure Polytechnique de Yaoundé...
+                Je suis Olivier Mogonel, étudiant ingénieur en Génie Civil à l&#39;École Nationale Supérieure Polytechnique de Yaoundé...
               </p>
               <div className="relative h-48 md:h-64">
                 <Image

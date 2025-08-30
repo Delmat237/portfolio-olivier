@@ -21,8 +21,8 @@ export default function Footer() {
   ]
 
   const socialLinks = [
-    { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com/in/olivier-mogonel' },
-    { name: 'GitHub', icon: Github, href: 'https://github.com/olivier-mogonel' },
+    { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com/in/leonel-azangue' },
+    { name: 'GitHub', icon: Github, href: 'https://github.com/Delmat237' },
     { name: 'Email', icon: Mail, href: 'mailto:Oliviermg10@gmail.com' }
   ]
 

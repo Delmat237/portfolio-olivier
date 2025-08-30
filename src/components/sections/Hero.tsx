@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronDown, MapPin, Calendar, Phone, Mail, Download, ExternalLink } from 'lucide-react'
+import { ChevronDown, MapPin, Calendar, Phone, Mail, Download, ExternalLink, Github, Linkedin } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
@@ -150,14 +150,14 @@ export default function Hero() {
                   target="_blank"
                   className="w-12 h-12 bg-gray-100 hover:bg-primary-100 rounded-lg flex items-center justify-center transition-all duration-200 hover:-translate-y-1 group"
                 >
-                  <ExternalLink className="w-5 h-5 text-gray-600 group-hover:text-primary-600" />
+                  <Linkedin className="w-5 h-5 text-gray-600 group-hover:text-primary-600" />
                 </Link>
                 <Link 
                   href="https://github.com/olivier-mogonel" 
                   target="_blank"
                   className="w-12 h-12 bg-gray-100 hover:bg-primary-100 rounded-lg flex items-center justify-center transition-all duration-200 hover:-translate-y-1 group"
                 >
-                  <ExternalLink className="w-5 h-5 text-gray-600 group-hover:text-primary-600" />
+                  <Github className="w-5 h-5 text-gray-600 group-hover:text-primary-600" />
                 </Link>
               </div>
             </div>

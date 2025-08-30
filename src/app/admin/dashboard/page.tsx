@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button'
 import ProtectedRoute from '@/components/shared/ProtectedRoute'
 import { useAuth } from '@/hooks/useAuth'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 const statsCards = [
   {
@@ -74,10 +75,12 @@ const recentActivities = [
   }
 ]
 
+
 export default function AdminDashboard() {
   const { user, logout } = useAuth()
   const [isLoading, setIsLoading] = useState(true)
-
+  const router = useRouter()
+  
   useEffect(() => {
     // Simulation du chargement des données
     setTimeout(() => setIsLoading(false), 1000)
@@ -85,7 +88,11 @@ export default function AdminDashboard() {
 
   const handleLogout = () => {
     logout()
-    toast.success('Déconnexion réussie')
+     toast.success('Déconnexion réussie !', {
+          description: 'Redirection vers l acceuil...'
+        })
+           router.push('/')
+  
   }
 
   if (isLoading) {

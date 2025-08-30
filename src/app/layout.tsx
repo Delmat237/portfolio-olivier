@@ -2,7 +2,7 @@ import type { Metadata,Viewport } from "next";
 import {Inter} from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'sonner'
-
+import AuthProvider from "@/contexts/AuthContext";
 
 
 const inter = Inter({ 
@@ -84,7 +84,7 @@ export default function RootLayout({
           
           {/* Contenu principal */}
           <div className="relative z-10">
-            {children}
+            <AuthProvider>{children}</AuthProvider>
           </div>
         </div>
         

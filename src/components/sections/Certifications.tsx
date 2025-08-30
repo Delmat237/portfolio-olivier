@@ -88,7 +88,7 @@ export default function Certifications() {
   }
 
   return (
-    <section id="certifications" className="section-padding bg-gradient-to-br from-slate-50 via-blue-500 to-sky-700">
+    <section id="certifications" className="section-padding bg-gradient-to-br from-slate-50 via-blue-400 to-sky-750">
       <div className="container-custom">
         <AnimatedSection>
           <div className="text-center mb-16">

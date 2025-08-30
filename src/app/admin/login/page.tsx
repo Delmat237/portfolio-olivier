@@ -65,7 +65,7 @@ export default function AdminLogin() {
             Administration
           </CardTitle>
           <p className="text-gray-600 mt-2">
-            Connectez-vous pour accéder au panel d'administration
+            Connectez-vous pour accéder au panel d&apos;administration
           </p>
         </CardHeader>
 
