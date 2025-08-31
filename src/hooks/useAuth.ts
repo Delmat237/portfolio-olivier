@@ -1,7 +1,7 @@
 // src/hooks/useAuth.ts
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 
 interface User {
   email: string
@@ -20,11 +20,6 @@ export function useAuth() {
     isAuthenticated: false,
     isLoading: true
   })
-
-  // Vérifier l'authentification au chargement
-  useEffect(() => {
-    checkAuth()
-  }, [])
 
   const checkAuth = useCallback(async () => {
     try {
@@ -49,6 +44,7 @@ export function useAuth() {
       console.error('Error checking auth:', error)
       logout()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const login = async (email: string, password: string) => {

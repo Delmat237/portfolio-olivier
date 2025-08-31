@@ -76,7 +76,7 @@ console.log('Stored hash:', ADMIN_USER.password);
       return NextResponse.json(
         { 
           message: 'Données invalides',
-          errors: error.errors
+          errors: error
         },
         { status: 400 }
       )

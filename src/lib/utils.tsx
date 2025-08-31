@@ -66,7 +66,7 @@ export function generateId(): string {
 }
 
 // Fonction pour débouncer une fonction
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
@@ -79,7 +79,7 @@ export function debounce<T extends (...args: any[]) => any>(
 }
 
 // Fonction pour throttler une fonction
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
@@ -130,6 +130,7 @@ export async function copyToClipboard(text: string): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(text)
     return true
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     // Fallback pour les navigateurs plus anciens
     try {
@@ -144,6 +145,7 @@ export async function copyToClipboard(text: string): Promise<boolean> {
       const result = document.execCommand('copy')
       document.body.removeChild(textArea)
       return result
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       return false
     }

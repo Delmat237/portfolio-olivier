@@ -57,9 +57,9 @@ export default function Footer() {
             </div>
             
             <p className="text-gray-300 leading-relaxed mb-6">
-              Étudiant passionné en 4ème année de Génie Civil à l'École Nationale Supérieure 
-              Polytechnique de Yaoundé et Master 2 en Mathématiques. Spécialisé dans l'analyse 
-              structurelle et l'optimisation mathématique.
+              Étudiant passionné en 4ème année de Génie Civil à l&#39;École Nationale Supérieure 
+              Polytechnique de Yaoundé et Master 2 en Mathématiques. Spécialisé dans l&#39;analyse 
+              structurelle et l&#39;optimisation mathématique.
             </p>
 
             {/* Réseaux sociaux */}

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import LoginForm from '@/components/auth/LoginForm';
 import { useAuth } from '@/contexts/AuthContext';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
+//import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 export default function LoginPage() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -17,11 +17,11 @@ export default function LoginPage() {
   }, [isAuthenticated, router]);
 
   if (isLoading) {
-    return <LoadingSpinner />;
+   // return <LoadingSpinner />;
   }
 
   if (isAuthenticated) {
-    return <LoadingSpinner />;
+   // return <LoadingSpinner />;
   }
 
   return (

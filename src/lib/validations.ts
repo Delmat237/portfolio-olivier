@@ -51,27 +51,4 @@ export const projectFormSchema = z.object({
   startDate: z.string(),
   endDate: z.string().optional(),
   highlights: z.array(z.string()).optional()
-}).json(
-      { message: 'Email envoyé avec succès' },
-      { status: 200 }
-    )
-
-  } catch (error) {
-    console.error('Error sending email:', error)
-    
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { 
-          message: 'Données invalides',
-          errors: error.errors
-        },
-        { status: 400 }
-      )
-    }
-
-    return NextResponse.json(
-      { message: 'Erreur lors de l\'envoi de l\'email' },
-      { status: 500 }
-    )
-  }
-}
+})

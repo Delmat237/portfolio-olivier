@@ -11,12 +11,12 @@ const educationSchema = z.object({
   location: z.string().min(1, 'La localisation est requise'),
   status: z.enum(['En cours', 'Validé']),
   type: z.enum(['current', 'completed']),
-  description: z.string().optional(),
-  highlights: z.array(z.string()).optional()
+  description: z.string(),
+  highlights: z.array(z.string())
 })
 
 // Données d'éducation (simulées - dans un vrai projet, utiliser une base de données)
-let educationData = [
+const educationData = [
   {
     id: 'current',
     period: '2024-2025',
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { message: 'Données invalides', errors: error.errors },
+        { message: 'Données invalides', errors: error },
         { status: 400 }
       )
     }

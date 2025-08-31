@@ -9,15 +9,15 @@ const projectSchema = z.object({
   category: z.string().min(1, 'La catégorie est requise'),
   technologies: z.array(z.string()),
   status: z.enum(['En cours', 'Terminé', 'En pause']),
-  image: z.string().optional(),
+  image: z.string(),
   link: z.string().optional(),
   startDate: z.string(),
-  endDate: z.string().optional(),
-  highlights: z.array(z.string()).optional()
+  endDate: z.string(),
+  highlights: z.array(z.string())
 })
 
 // Données de projets simulées
-let projectsData = [
+const projectsData = [
   {
     id: '1',
     title: 'Analyse structurelle d\'un pont',
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { message: 'Données invalides', errors: error.errors },
+        { message: 'Données invalides', errors: error },
         { status: 400 }
       )
     }

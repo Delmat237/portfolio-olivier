@@ -12,7 +12,7 @@ class EmailService {
   private transporter: nodemailer.Transporter
 
   constructor() {
-    this.transporter = nodemailer.createTransporter({
+    this.transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,

@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Building, Calculator, Wrench, Users, BookOpen, Zap, ChevronRight } from 'lucide-react'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import skillCategories from '@/data/skill/skillCategories'
 
 import certifications from '@/data/skill/certifications'

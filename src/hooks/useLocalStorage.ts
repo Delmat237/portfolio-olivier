@@ -1,7 +1,7 @@
 // src/hooks/useLocalStorage.ts
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 type SetValue<T> = T | ((val: T) => T)
 

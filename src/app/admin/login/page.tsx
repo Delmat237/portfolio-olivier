@@ -46,7 +46,7 @@ export default function AdminLogin() {
         })
       }
     } catch (error) {
-      toast.error('Erreur de connexion', {
+      toast.error('Erreur de connexion'+error, {
         description: 'Une erreur inattendue s\'est produite'
       })
     } finally {

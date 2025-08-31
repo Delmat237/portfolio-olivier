@@ -1,16 +1,16 @@
 import type { Metadata,Viewport } from "next";
-import {Inter} from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'sonner'
 import AuthProvider from "@/contexts/AuthContext";
 
 
-const inter = Inter({ 
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter'
-});
+import localFont from 'next/font/local';
 
+const inter = localFont({
+  src: '../../public/fonts/Inter-VariableFont_opsz,wght.ttf',
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export const metadata: Metadata = {
 title: 'Olivier Mogonel - Ingénieur Génie Civil & Mathématiques',

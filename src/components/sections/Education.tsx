@@ -46,7 +46,7 @@ export default function Education() {
               <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-500 to-civil-500"></div>
               
               <div className="space-y-6">
-                {educationData.map((edu, index) => (
+                {educationData.map((edu) => (
                   <div key={edu.id} className="relative">
                     {/* Point sur la timeline */}
                     <div className={`absolute left-6 w-4 h-4 rounded-full border-4 border-white shadow-lg z-10 ${

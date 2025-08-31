@@ -48,7 +48,7 @@ export default function EmailTemplate({
         fontSize: '12px',
         color: '#6b7280'
       }}>
-        <p>Ce message a été envoyé depuis le portfolio d'Olivier Mogonel</p>
+        <p>Ce message a été envoyé depuis le portfolio d&#39;Olivier Mogonel</p>
         <p>© 2024 Olivier Mogonel - Tous droits réservés</p>
       </div>
     </div>

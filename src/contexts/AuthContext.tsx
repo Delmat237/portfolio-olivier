@@ -7,7 +7,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => void;
   logout: () => void;
-  user: any; // À typer selon vos besoins
+  user: unknown; // À typer selon vos besoins
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -15,7 +15,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user] = useState<unknown>(null);
 
   useEffect(() => {
     // Simuler une vérification d'authentification (remplacer par une API)

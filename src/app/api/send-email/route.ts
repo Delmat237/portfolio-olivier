@@ -11,7 +11,17 @@ const contactSchema = z.object({
   subject: z.string().min(5, 'Le sujet doit contenir au moins 5 caractères'),
   message: z.string().min(10, 'Le message doit contenir au moins 10 caractères')
 })
-
+const educationSchema = z.object({
+  id: z.string().optional(),
+  period: z.string().min(1, 'La période est requise'),
+  title: z.string().min(1, 'Le titre est requis'),
+  institutions: z.array(z.string()).min(1, 'Au moins une institution est requise'),
+  location: z.string().min(1, 'La localisation est requise'),
+  status: z.enum(['En cours', 'Validé']),
+  type: z.enum(['current', 'completed']),
+  description: z.string().optional(),
+  highlights: z.array(z.string()).optional()
+})
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
@@ -21,7 +31,7 @@ export async function POST(request: NextRequest) {
     const { name, email, subject, message } = validatedData
 
     // Configuration du transporteur email
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
@@ -85,10 +95,16 @@ export async function POST(request: NextRequest) {
       { message: 'Erreur lors de la création' },
       { status: 500 }
     )
+  }catch{
+    console.log("ERROR")
+    return NextResponse.json(
+      { message: 'Erreur lors de la création' },
+      { status: 500 }
+    )
   }
 }
 
-export async function PUT(request: NextRequest) {
+ export async function PUT(request: NextRequest) {
   try {
     const body = await request.json()
     const validatedData = educationSchema.parse(body)
@@ -112,7 +128,7 @@ export async function PUT(request: NextRequest) {
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { message: 'Données invalides', errors: error.errors },
+        { message: 'Données invalides', errors: error },
         { status: 400 }
       )
     }

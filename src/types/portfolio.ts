@@ -78,12 +78,12 @@ export interface PortfolioData {
 export interface EditableSectionProps {
   section: keyof PortfolioData;
   title: string;
-  data: any;
-  onSave: (section: keyof PortfolioData, data: any) => Promise<void>;
+  data: unknown;
+  onSave: (section: keyof PortfolioData, data: unknown) => Promise<void>;
 }
 
 // Types pour les réponses API
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   message?: string;
@@ -96,5 +96,5 @@ export type CrudAction = 'create' | 'read' | 'update' | 'delete';
 export interface CrudOperationResult {
   success: boolean;
   message: string;
-  data?: any;
+  data?: unknown;
 }

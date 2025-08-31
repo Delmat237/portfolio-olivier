@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronDown, MapPin, Calendar, Phone, Mail, Download, ExternalLink, Github, Linkedin } from 'lucide-react'
+import { ChevronDown, MapPin, Calendar, Phone, Mail, Download, Github, Linkedin } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 
