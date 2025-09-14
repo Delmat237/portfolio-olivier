@@ -1,18 +1,60 @@
-// src/components/sections/Certifications.tsx
-'use client'
+'use client';
 
-import {  Download, ExternalLink, Calendar, Building } from 'lucide-react'
-import AnimatedSection from '@/components/shared/AnimatedSection'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import certifications from '@/data/certifications'
+import { useState, useEffect } from 'react';
+import { Download, ExternalLink, Calendar, Building } from 'lucide-react';
+import AnimatedSection from '@/components/shared/AnimatedSection';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
+interface Certification {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+  institution: string;
+  year: number;
+  location: string;
+  image: string; // Chemin vers l'icône ou image
+  color: string; // Gradient color
+  verified: boolean;
+  icon?: React.ComponentType<unknown>; // Si vous utilisez des icônes dynamiques
+}
 
 export default function Certifications() {
+  const [certifications, setCertifications] = useState<Certification[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCertifications = async () => {
+      try {
+        const response = await fetch('/api/certifications');
+        if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+        const data = await response.json();
+        setCertifications(data || []);
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? `Une erreur est survenue lors du chargement des certifications : ${err.message}`
+            : 'Une erreur est survenue lors du chargement des certifications.'
+        );
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCertifications();
+  }, []);
+
   const handleDownloadCertificate = (certId: string) => {
-    // Logique de téléchargement du certificat
-    console.log(`Téléchargement du certificat ${certId}`)
-  }
+    // Logique de téléchargement du certificat (à implémenter, par exemple avec un lien ou un fichier)
+    console.log(`Téléchargement du certificat ${certId}`);
+    // Exemple : window.open(`/api/download/${certId}`, '_blank');
+  };
+
+  if (loading) return <div className="text-center py-10">Chargement...</div>;
+  if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
 
   return (
     <section id="certifications" className="section-padding bg-gradient-to-br from-slate-50 via-blue-400 to-sky-750">
@@ -23,8 +65,8 @@ export default function Certifications() {
               Mes <span className="gradient-text">Certifications</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Un parcours académique rigoureux marqué par l&apos;obtention de diplômes 
-              et certifications reconnus, témoins de mon engagement envers l&apos;excellence.
+              Un parcours académique rigoureux marqué par l&#39;obtention de diplômes
+              et certifications reconnus, témoins de mon engagement envers l&#39;excellence.
             </p>
           </div>
         </AnimatedSection>
@@ -36,9 +78,9 @@ export default function Certifications() {
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className={`w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-r ${cert.color} group-hover:scale-110 transition-transform duration-200`}>
-                      <cert.icon className="w-7 h-7 text-white" />
+                      {cert.icon ? <cert.icon className="w-7 h-7 text-white" /> : <Building className="w-7 h-7 text-white" />}
                     </div>
-                    
+
                     {cert.verified && (
                       <div className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -46,21 +88,21 @@ export default function Certifications() {
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="mb-4">
                     <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
                       {cert.type}
                     </span>
                   </div>
-                  
+
                   <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors duration-200">
                     {cert.name}
                   </h3>
-                  
+
                   <p className="text-gray-600 text-sm mb-3">
                     {cert.description}
                   </p>
-                  
+
                   <div className="space-y-2 text-sm text-gray-600 mb-4">
                     <div className="flex items-center gap-2">
                       <Building className="w-4 h-4" />
@@ -71,10 +113,10 @@ export default function Certifications() {
                       <span>{cert.year} • {cert.location}</span>
                     </div>
                   </div>
-                  
+
                   <div className="flex gap-2 pt-4 border-t border-gray-100">
                     <Button
-                      onClick={() => handleDownloadCertificate(cert.id)}
+                      onClick={() => handleDownloadCertificate(cert.id.toString())}
                       variant="outline"
                       size="sm"
                       className="flex-1 border-primary-200 text-primary-600 hover:bg-primary-50"
@@ -82,7 +124,7 @@ export default function Certifications() {
                       <Download className="w-4 h-4 mr-2" />
                       Télécharger
                     </Button>
-                    
+
                     <Button
                       size="sm"
                       className="bg-primary-600 hover:bg-primary-700 text-white"
@@ -105,21 +147,21 @@ export default function Certifications() {
               </div>
               <div className="text-gray-600">Certifications</div>
             </div>
-            
+
             <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-xl">
               <div className="text-3xl font-bold text-green-600 mb-2">
                 {certifications.filter(c => c.verified).length}
               </div>
               <div className="text-gray-600">Vérifiées</div>
             </div>
-            
+
             <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-xl">
               <div className="text-3xl font-bold text-blue-600 mb-2">
                 {new Date().getFullYear() - 2013}
               </div>
-              <div className="text-gray-600">Années d&apos;études</div>
+              <div className="text-gray-600">Années d&#39;études</div>
             </div>
-            
+
             <div className="text-center p-6 bg-white/80 backdrop-blur-sm rounded-xl">
               <div className="text-3xl font-bold text-purple-600 mb-2">
                 {[...new Set(certifications.map(c => c.institution))].length}
@@ -130,5 +172,5 @@ export default function Certifications() {
         </AnimatedSection>
       </div>
     </section>
-  )
+  );
 }

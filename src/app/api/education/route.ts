@@ -1,8 +1,10 @@
-// src/app/api/education/route.ts
-import { NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
+import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+import { z } from 'zod';
+import educationData from '@/data/education.json'; // Import des données statiques
 
-// Schema de validation pour l'éducation
+const prisma = new PrismaClient();
+
 const educationSchema = z.object({
   id: z.string().optional(),
   period: z.string().min(1, 'La période est requise'),
@@ -11,75 +13,163 @@ const educationSchema = z.object({
   location: z.string().min(1, 'La localisation est requise'),
   status: z.enum(['En cours', 'Validé']),
   type: z.enum(['current', 'completed']),
-  description: z.string(),
-  highlights: z.array(z.string())
-})
-
-// Données d'éducation (simulées - dans un vrai projet, utiliser une base de données)
-const educationData = [
-  {
-    id: 'current',
-    period: '2024-2025',
-    title: 'Master 2 en Mathématiques & 3ème année Génie Civil',
-    institutions: [
-      'Université de Yaoundé I (Master 2 Mathématiques option Analyse et Applications)',
-      'École Nationale Supérieure Polytechnique de Yaoundé (3ème année Génie Civil)'
-    ],
-    location: 'Yaoundé, Cameroun',
-    status: 'En cours',
-    type: 'current',
-    description: 'Formation avancée combinant expertise mathématique théorique et application pratique en génie civil.',
-    highlights: [
-      'Analyse fonctionnelle et équations différentielles',
-      'Conception d\'ouvrages en béton armé',
-      'Modélisation mathématique des structures',
-      'Mécanique des sols et fondations'
-    ]
-  }
-  // ... autres entrées
-]
+  description: z.string().optional(),
+  highlights: z.array(z.string()).optional(),
+});
 
 export async function GET() {
   try {
-    return NextResponse.json({ data: educationData })
-  } catch (error) {
-    console.error('Error fetching education:', error)
+    const educations = await prisma.education.findMany({
+      select: {
+        id: true,
+        period: true,
+        title: true,
+        institutions: true,
+        location: true,
+        status: true,
+        type: true,
+        description: true,
+        highlights: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    return NextResponse.json(educations); // Renvoie directement le tableau
+  } catch (error: unknown) {
+    console.error('Erreur lors de la récupération des formations :', error);
+
+    // Vérifie si l'erreur est liée à l'initialisation de Prisma ou à une connexion échouée
+    if (error.name === 'PrismaClientInitializationError' || error.message.includes('Can\'t reach database server')) {
+      console.warn('Base de données inaccessible, utilisation des données statiques.');
+      return NextResponse.json(educationData); // Retourne les données statiques
+    }
+
     return NextResponse.json(
       { message: 'Erreur lors de la récupération des données' },
       { status: 500 }
-    )
+    );
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const validatedData = educationSchema.parse(body)
-    
-    const newEducation = {
-      ...validatedData,
-      id: validatedData.id || Date.now().toString()
-    }
-    
-    educationData.push(newEducation)
-    
+    const body = await request.json();
+    const validatedData = educationSchema.parse(body);
+
+    const newEducation = await prisma.education.create({
+      data: {
+        ...validatedData,
+        id: validatedData.id || Date.now().toString(), // Génère un ID unique si non fourni
+      },
+    });
+
     return NextResponse.json(
       { message: 'Formation ajoutée avec succès', data: newEducation },
       { status: 201 }
-    )
+    );
   } catch (error) {
-    console.error('Error creating education:', error)
-    
+    console.error('Erreur lors de la création de la formation :', error);
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { message: 'Données invalides', errors: error },
+        { message: 'Données invalides', errors: error.errors },
         { status: 400 }
-      )
+      );
     }
-    
+
     return NextResponse.json(
       { message: 'Erreur lors de la création de la formation' },
       { status: 500 }
-    )
+    );
+  } finally {
+    await prisma.$disconnect();
   }
-}   
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const validatedData = educationSchema.parse(body);
+
+    if (!validatedData.id) {
+      return NextResponse.json(
+        { message: 'L\'ID de la formation est requis' },
+        { status: 400 }
+      );
+    }
+
+    const updatedEducation = await prisma.education.update({
+      where: { id: validatedData.id },
+      data: validatedData,
+    });
+
+    return NextResponse.json(
+      { message: 'Formation mise à jour avec succès', data: updatedEducation },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour de la formation :', error);
+
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { message: 'Données invalides', errors: error.errors },
+        { status: 400 }
+      );
+    }
+
+    if (error.code === 'P2025') {
+      return NextResponse.json(
+        { message: 'Formation non trouvée' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      { message: 'Erreur lors de la mise à jour de la formation' },
+      { status: 500 }
+    );
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { id } = await request.json();
+
+    if (!id) {
+      return NextResponse.json(
+        { message: 'L\'ID de la formation est requis' },
+        { status: 400 }
+      );
+    }
+
+    await prisma.education.delete({
+      where: { id },
+    });
+
+    return NextResponse.json(
+      { message: 'Formation supprimée avec succès' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Erreur lors de la suppression de la formation :', error);
+
+    if (error.code === 'P2025') {
+      return NextResponse.json(
+        { message: 'Formation non trouvée' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      { message: 'Erreur lors de la suppression de la formation' },
+      { status: 500 }
+    );
+  } finally {
+    await prisma.$disconnect();
+  }
+}

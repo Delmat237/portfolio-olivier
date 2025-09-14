@@ -1,96 +1,193 @@
-// src/app/api/projects/route.ts
-import { NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
+import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+import { z } from 'zod';
+import projectsData from '@/data/projects.json'; // Import des données statiques
+import { UnknownTypedSql } from '@prisma/client/runtime/client';
 
+const prisma = new PrismaClient();
+
+// Schéma mis à jour pour harmoniser avec le composant
 const projectSchema = z.object({
-  id: z.string().optional(),
+  id: z.number().optional(),
   title: z.string().min(1, 'Le titre est requis'),
   description: z.string().min(1, 'La description est requise'),
-  category: z.string().min(1, 'La catégorie est requise'),
-  technologies: z.array(z.string()),
-  status: z.enum(['En cours', 'Terminé', 'En pause']),
-  image: z.string(),
+  category: z.enum(['civil', 'math', 'technical'], 'La catégorie doit être civil, math ou technical'),
+  technologies: z.array(z.string()).min(1, 'Au moins une technologie est requise'),
+  status: z.enum(['current', 'completed', 'paused'], 'Le statut doit être current, completed ou paused'),
+  image: z.string().min(1, 'Une image est requise'),
   link: z.string().optional(),
-  startDate: z.string(),
-  endDate: z.string(),
-  highlights: z.array(z.string())
-})
-
-// Données de projets simulées
-const projectsData = [
-  {
-    id: '1',
-    title: 'Analyse structurelle d\'un pont',
-    description: 'Modélisation et calcul de résistance pour un pont en béton armé',
-    category: 'Génie Civil',
-    technologies: ['AutoCAD', 'Calculs manuels', 'Béton armé'],
-    status: 'Terminé',
-    image: '/images/projects/pont.jpg',
-    startDate: '2023-09',
-    endDate: '2023-12',
-    highlights: [
-      'Dimensionnement des poutres principales',
-      'Calcul des charges et surcharges',
-      'Vérification de la stabilité'
-    ]
-  },
-  {
-    id: '2',
-    title: 'Optimisation mathématique',
-    description: 'Résolution d\'équations différentielles pour la modélisation de structures',
-    category: 'Mathématiques',
-    technologies: ['MATLAB', 'Python', 'Analyse numérique'],
-    status: 'En cours',
-    startDate: '2024-01',
-    highlights: [
-      'Méthodes de Runge-Kutta',
-      'Approximations par différences finies',
-      'Validation des résultats'
-    ]
-  }
-]
+  startDate: z.string().refine((val) => !isNaN(Date.parse(val)), 'Date de début invalide'),
+  endDate: z.string().optional().refine((val) => !val || !isNaN(Date.parse(val)), 'Date de fin invalide'),
+  highlights: z.array(z.string()).optional(),
+});
 
 export async function GET() {
   try {
-    return NextResponse.json({ data: projectsData })
-  } catch (error) {
-    console.error('Error fetching projects:', error)
+    const projects = await prisma.project.findMany({
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        category: true,
+        technologies: true,
+        status: true,
+        image: true,
+        link: true,
+        startDate: true,
+        endDate: true,
+        highlights: true,
+        detailedDescription: true, // Ajouté pour correspondre au composant
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const categories = await prisma.projectCategory.findMany(); // Supposant une table pour les catégories
+
+    return NextResponse.json({ projects, categories }); // Renvoie un objet avec projets et catégories
+  } catch (error: unKnown) {
+    console.error('Erreur lors de la récupération des projets :', error);
+
+    // Vérifie si l'erreur est liée à l'initialisation de Prisma ou à une connexion échouée
+    if (error.name === 'PrismaClientInitializationError' || error.message.includes('Can\'t reach database server')) {
+      console.warn('Base de données inaccessible, utilisation des données statiques.');
+      return NextResponse.json(projectsData); // Retourne les données statiques
+    }
+
     return NextResponse.json(
-      { message: 'Erreur lors de la récupération des projets' },
+      { message: 'Erreur lors de la récupération des données' },
       { status: 500 }
-    )
+    );
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const validatedData = projectSchema.parse(body)
-    
-    const newProject = {
-      ...validatedData,
-      id: validatedData.id || Date.now().toString()
-    }
-    
-    projectsData.push(newProject)
-    
+    const body = await request.json();
+    const validatedData = projectSchema.parse(body);
+
+    const newProject = await prisma.project.create({
+      data: {
+        ...validatedData,
+        id: validatedData.id || undefined, // Laisser Prisma générer l'ID si non fourni
+        startDate: new Date(validatedData.startDate),
+        endDate: validatedData.endDate ? new Date(validatedData.endDate) : null,
+        detailedDescription: validatedData.description, // Mappe description vers detailedDescription
+      },
+    });
+
     return NextResponse.json(
       { message: 'Projet ajouté avec succès', data: newProject },
       { status: 201 }
-    )
+    );
   } catch (error) {
-    console.error('Error creating project:', error)
-    
+    console.error('Erreur lors de la création du projet :', error);
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { message: 'Données invalides', errors: error },
+        { message: 'Données invalides', errors: error.errors },
         { status: 400 }
-      )
+      );
     }
-    
+
     return NextResponse.json(
       { message: 'Erreur lors de la création du projet' },
       { status: 500 }
-    )
+    );
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const validatedData = projectSchema.parse(body);
+
+    if (!validatedData.id) {
+      return NextResponse.json(
+        { message: 'L\'ID du projet est requis' },
+        { status: 400 }
+      );
+    }
+
+    const updatedProject = await prisma.project.update({
+      where: { id: validatedData.id },
+      data: {
+        ...validatedData,
+        startDate: new Date(validatedData.startDate),
+        endDate: validatedData.endDate ? new Date(validatedData.endDate) : null,
+        detailedDescription: validatedData.description, // Mappe description vers detailedDescription
+      },
+    });
+
+    return NextResponse.json(
+      { message: 'Projet mis à jour avec succès', data: updatedProject },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du projet :', error);
+
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { message: 'Données invalides', errors: error.errors },
+        { status: 400 }
+      );
+    }
+
+    if (error.code === 'P2025') {
+      return NextResponse.json(
+        { message: 'Projet non trouvé' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      { message: 'Erreur lors de la mise à jour du projet' },
+      { status: 500 }
+    );
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { id } = await request.json();
+
+    if (!id) {
+      return NextResponse.json(
+        { message: 'L\'ID du projet est requis' },
+        { status: 400 }
+      );
+    }
+
+    await prisma.project.delete({
+      where: { id },
+    });
+
+    return NextResponse.json(
+      { message: 'Projet supprimé avec succès' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Erreur lors de la suppression du projet :', error);
+
+    if (error.code === 'P2025') {
+      return NextResponse.json(
+        { message: 'Projet non trouvé' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      { message: 'Erreur lors de la suppression du projet' },
+      { status: 500 }
+    );
+  } finally {
+    await prisma.$disconnect();
   }
 }

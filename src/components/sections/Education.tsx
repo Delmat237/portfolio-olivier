@@ -1,24 +1,69 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { GraduationCap, Calendar, MapPin, ChevronDown } from 'lucide-react'
-import AnimatedSection from '@/components/shared/AnimatedSection'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { useState, useEffect } from 'react';
+import { GraduationCap, Calendar, MapPin, ChevronDown } from 'lucide-react';
+import AnimatedSection from '@/components/shared/AnimatedSection';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
-import educationData  from '@/data/education/educationData'
-import  secondaryEducation from '@/data/education/secondaryEducation'
-
-
+interface EducationItem {
+  id: string;
+  period: string;
+  title: string;
+  institutions: string[];
+  location: string;
+  status: string;
+  type: string;
+  description: string;
+  highlights: string[];
+}
 
 export default function Education() {
-  const [expandedCard, setExpandedCard] = useState<string | null>('current')
-  const [showSecondary, setShowSecondary] = useState(false)
+  const [educations, setEducations] = useState<EducationItem[] | null>(null); // Permet null initialement
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
+  const [showSecondary, setShowSecondary] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+useEffect(() => {
+  const fetchEducations = async () => {
+    try {
+      const response = await fetch('/api/education');
+      if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setEducations(data);
+      } else {
+        throw new Error('Données non valides: ' + JSON.stringify(data));
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? `Une erreur est survenue lors du chargement des formations : ${err.message}`
+          : 'Une erreur est survenue lors du chargement des formations.'
+      );
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchEducations();
+}, []);
 
   const toggleCard = (id: string) => {
-    setExpandedCard(expandedCard === id ? null : id)
-  }
+    setExpandedCard(expandedCard === id ? null : id);
+  };
 
+  if (loading) return <div className="text-center py-10">Chargement...</div>;
+  if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
+  if (!educations) return <div className="text-center py-10">Aucune donnée disponible.</div>; // Cas où educations est null
+
+  // Séparer les formations supérieures (type: current ou completed) et secondaires
+  const higherEducation = Array.isArray(educations) ? educations.filter(edu => ['higher','current'].includes(edu.type)) : [];
+  const secondaryEducation = Array.isArray(educations) ? educations.filter(edu => !['higher'].includes(edu.type)) : [];
+
+  console.log(higherEducation);
   return (
     <section id="education" className="section-padding bg-gradient-to-br from-slate-50 via-blue-500 to-sky-500">
       <div className="container-custom">
@@ -46,7 +91,7 @@ export default function Education() {
               <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-500 to-civil-500"></div>
               
               <div className="space-y-6">
-                {educationData.map((edu) => (
+                {higherEducation.map((edu) => (
                   <div key={edu.id} className="relative">
                     {/* Point sur la timeline */}
                     <div className={`absolute left-6 w-4 h-4 rounded-full border-4 border-white shadow-lg z-10 ${
@@ -69,7 +114,7 @@ export default function Education() {
                                   ? 'bg-gradient-to-r from-primary-500 to-civil-500' 
                                   : 'bg-gradient-to-r from-gray-400 to-gray-600'
                               }`}>
-                                <edu.icon className="w-6 h-6 text-white" />
+                                <GraduationCap className="w-6 h-6 text-white" />
                               </div>
                               
                               <div className="flex-1">
@@ -181,7 +226,7 @@ export default function Education() {
                         {edu.title}
                       </h4>
                       
-                      <p className="text-gray-600 text-sm mb-2">{edu.institution}</p>
+                      <p className="text-gray-600 text-sm mb-2">{edu.institutions[0]}</p> {/* Utiliser le premier institution */}
                       
                       <div className="flex items-center justify-center gap-1 text-sm text-gray-500">
                         <MapPin className="w-4 h-4" />
@@ -218,5 +263,5 @@ export default function Education() {
         </AnimatedSection>
       </div>
     </section>
-  )
+  );
 }

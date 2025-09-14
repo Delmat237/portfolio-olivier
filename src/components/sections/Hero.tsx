@@ -55,8 +55,8 @@ export default function Hero() {
   const handleDownloadCV = () => {
     // Logique pour télécharger le CV
     const link = document.createElement('a')
-    link.href = '/cv-olivier-mogonel.pdf'
-    link.download = 'CV-Olivier-Mogonel.pdf'
+    link.href = '/CV-OLIVIER.pdf'
+    link.download = 'CV-OLIVIER.pdf'
     link.click()
   }
 

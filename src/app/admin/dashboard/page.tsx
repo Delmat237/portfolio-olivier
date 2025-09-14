@@ -1,7 +1,6 @@
-// src/app/admin/dashboard/page.tsx
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { 
   Users, 
   BookOpen, 
@@ -12,13 +11,13 @@ import {
   Eye,
   Settings,
   LogOut
-} from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import ProtectedRoute from '@/components/shared/ProtectedRoute'
-import { useAuth } from '@/hooks/useAuth'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
+} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import ProtectedRoute from '@/components/shared/ProtectedRoute';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 const statsCards = [
   {
@@ -49,7 +48,7 @@ const statsCards = [
     icon: BookOpen,
     color: 'text-orange-600 bg-orange-100'
   }
-]
+];
 
 const recentActivities = [
   {
@@ -73,27 +72,29 @@ const recentActivities = [
     time: 'Il y a 1 jour',
     icon: Settings
   }
-]
-
+];
 
 export default function AdminDashboard() {
-  const { user, logout } = useAuth()
-  const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
-  
+  const { user, logout } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+
   useEffect(() => {
     // Simulation du chargement des données
-    setTimeout(() => setIsLoading(false), 1000)
-  }, [])
+    setTimeout(() => setIsLoading(false), 1000);
+  }, []);
 
   const handleLogout = () => {
-    logout()
-     toast.success('Déconnexion réussie !', {
-          description: 'Redirection vers l acceuil...'
-        })
-           router.push('/')
-  
-  }
+    logout();
+    toast.success('Déconnexion réussie !', {
+      description: 'Redirection vers l\'accueil...',
+    });
+    router.push('/');
+  };
+
+  const handleNavigate = (path: string) => {
+    router.push(`/admin/${path}`);
+  };
 
   if (isLoading) {
     return (
@@ -103,7 +104,7 @@ export default function AdminDashboard() {
           <p className="text-gray-600">Chargement du tableau de bord...</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -209,22 +210,34 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
-                  <Button className="h-20 flex-col bg-primary-50 text-primary-700 hover:bg-primary-100 border border-primary-200">
+                  <Button
+                    onClick={() => handleNavigate('formations')}
+                    className="h-20 flex-col bg-primary-50 text-primary-700 hover:bg-primary-100 border border-primary-200"
+                  >
                     <BookOpen className="w-6 h-6 mb-2" />
                     <span className="text-sm">Gérer Formation</span>
                   </Button>
                   
-                  <Button className="h-20 flex-col bg-green-50 text-green-700 hover:bg-green-100 border border-green-200">
+                  <Button
+                    onClick={() => handleNavigate('projets')}
+                    className="h-20 flex-col bg-green-50 text-green-700 hover:bg-green-100 border border-green-200"
+                  >
                     <Briefcase className="w-6 h-6 mb-2" />
                     <span className="text-sm">Gérer Projets</span>
                   </Button>
                   
-                  <Button className="h-20 flex-col bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200">
+                  <Button
+                    onClick={() => handleNavigate('competences')}
+                    className="h-20 flex-col bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200"
+                  >
                     <Settings className="w-6 h-6 mb-2" />
                     <span className="text-sm">Compétences</span>
                   </Button>
                   
-                  <Button className="h-20 flex-col bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200">
+                  <Button
+                    onClick={() => handleNavigate('messages')}
+                    className="h-20 flex-col bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200"
+                  >
                     <Mail className="w-6 h-6 mb-2" />
                     <span className="text-sm">Messages</span>
                   </Button>
@@ -235,5 +248,5 @@ export default function AdminDashboard() {
         </main>
       </div>
     </ProtectedRoute>
-  )
+  );
 }

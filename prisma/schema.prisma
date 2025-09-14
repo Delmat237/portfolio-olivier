@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SkillCategory {
+  id          Int      @id @default(autoincrement())
+  title       String
+  icon        String   // Nom de l'icône (ex. "Building", "Calculator")
+  color       String   // Gradient (ex. "from-civil-500 to-blue-600")
+  bgColor     String   // Gradient de fond
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  skills      Skill[]
+}
+
+model Skill {
+  id          Int      @id @default(autoincrement())
+  categoryId  Int
+  name        String
+  level       Int      // Niveau de compétence (0-100)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  category    SkillCategory @relation(fields: [categoryId], references: [id])
+}
+
+model Certification {
+  id          Int      @id @default(autoincrement())
+  name        String
+  institution String
+  year        String
+  location    String?
+  type        String   // Ex. "Diplôme national", "Diplôme universitaire"
+  description String?
+  icon        String   // Nom de l'icône (ex. "Award", "Building")
+  color       String   // Gradient (ex. "from-blue-500 to-indigo-600")
+  verified    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Project {
+  id                Int      @id @default(autoincrement())
+  title             String
+  description       String
+  category          String
+  technologies      String[] 
+  status            String
+  image             String
+  link              String?
+  startDate         DateTime
+  endDate           DateTime?
+  highlights        String[] 
+  detailedDescription String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now()) @updatedAt
+}
+
+model ProjectCategory {
+  id    String  @id
+  name  String
+  icon  String? // Si vous stockez le nom de l'icône
+  
+}
+
+model Education {
+  id          Int      @id @default(autoincrement())
+  period      String
+  title       String
+  institutions String[] // Tableau d'institutions
+  location    String
+  status      String   // Ex. "En cours", "Validé"
+  type        String   // Ex. "current", "completed"
+  icon        String   // Nom de l'icône
+  description String?
+  highlights  String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  name     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt // Ajout de @default(now()) pour l'insertion initiale
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  email     String
+  content   String
+  createdAt DateTime @default(now())
+}
