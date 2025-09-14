@@ -1,4 +1,3 @@
-// src/app/admin/login/page.tsx
 'use client'
 
 import { useState } from 'react'
@@ -55,16 +54,16 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-400 to-sky-700 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-2xl border-0 bg-blue/100 backdrop-blur-sm">
-        <CardHeader className="text-center pb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-primary-600 to-civil-600 rounded-full flex items-center justify-center mx-auto mb-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-2xl rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+        <CardHeader className="text-center pb-8 pt-10">
+          <div className="w-16 h-16 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-white font-bold text-2xl">OM</span>
           </div>
-          <CardTitle className="text-2xl font-bold text-gray-900">
+          <CardTitle className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             Administration
           </CardTitle>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
             Connectez-vous pour accéder au panel d&apos;administration
           </p>
         </CardHeader>
@@ -72,9 +71,9 @@ export default function AdminLogin() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email">Adresse email</Label>
+              <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">Adresse email</Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                 <Input
                   id="email"
                   name="email"
@@ -82,16 +81,16 @@ export default function AdminLogin() {
                   placeholder="admin@olivier-mogonel.com"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="pl-10"
+                  className="pl-10 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Mot de passe</Label>
+              <Label htmlFor="password" className="text-gray-700 dark:text-gray-300">Mot de passe</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
                 <Input
                   id="password"
                   name="password"
@@ -99,13 +98,13 @@ export default function AdminLogin() {
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="pl-10 pr-10"
+                  className="pl-10 pr-10 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -115,7 +114,7 @@ export default function AdminLogin() {
             <Button
               type="submit"
               disabled={isLoading || !formData.email || !formData.password}
-              className="w-full bg-gradient-to-r from-primary-600 to-civil-600 hover:from-primary-700 hover:to-civil-700"
+              className="w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-semibold transition-all duration-200"
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
@@ -128,10 +127,10 @@ export default function AdminLogin() {
             </Button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-gray-200">
+          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800">
             <Link 
               href="/"
-              className="flex items-center justify-center gap-2 text-gray-600 hover:text-primary-600 transition-colors duration-200"
+              className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors duration-200"
             >
               <ArrowLeft className="w-4 h-4" />
               Retour au portfolio

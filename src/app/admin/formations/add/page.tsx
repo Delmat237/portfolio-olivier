@@ -42,10 +42,41 @@ export default function AdminFormationsAdd() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleArrayChange = (e: React.ChangeEvent<HTMLInputElement>, index: number, field: 'institutions' | 'highlights') => {
-    const newArray = [...formData[field]];
+  const handleArrayChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number, field: 'institutions' | 'highlights') => {
+    // Correction : Utilise l'opérateur || [] pour s'assurer que le tableau n'est pas undefined
+    const newArray = [...(formData[field] || [])];
     newArray[index] = e.target.value;
     setFormData((prev) => ({ ...prev, [field]: newArray }));
+  };
+  
+  const handleAddHighlight = () => {
+    setFormData((prev) => ({
+      ...prev,
+      highlights: [...(prev.highlights || []), ''],
+    }));
+  };
+
+  const handleRemoveHighlight = (index: number) => {
+    setFormData((prev) => {
+      const newHighlights = [...(prev.highlights || [])];
+      newHighlights.splice(index, 1);
+      return { ...prev, highlights: newHighlights };
+    });
+  };
+
+  const handleAddInstitution = () => {
+    setFormData((prev) => ({
+      ...prev,
+      institutions: [...prev.institutions, ''],
+    }));
+  };
+  
+  const handleRemoveInstitution = (index: number) => {
+    setFormData((prev) => {
+      const newInstitutions = [...prev.institutions];
+      newInstitutions.splice(index, 1);
+      return { ...prev, institutions: newInstitutions };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -119,14 +150,25 @@ export default function AdminFormationsAdd() {
                 </div>
                 <div>
                   <Label htmlFor="institutions">Institutions</Label>
-                  <Input
-                    id="institutions"
-                    type="text"
-                    value={formData.institutions[0]}
-                    onChange={(e) => handleArrayChange(e, 0, 'institutions')}
-                    className="mt-1"
-                    required
-                  />
+                  {formData.institutions.map((institution, index) => (
+                    <div key={index} className="flex items-center space-x-2 mt-1">
+                      <Input
+                        type="text"
+                        value={institution}
+                        onChange={(e) => handleArrayChange(e, index, 'institutions')}
+                        className="flex-grow"
+                        required
+                      />
+                      {formData.institutions.length > 1 && (
+                        <Button type="button" onClick={() => handleRemoveInstitution(index)} variant="destructive">
+                          Supprimer
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                  <Button type="button" onClick={handleAddInstitution} variant="outline" className="mt-2">
+                    Ajouter une institution
+                  </Button>
                 </div>
                 <div>
                   <Label htmlFor="location">Lieu</Label>
@@ -176,12 +218,24 @@ export default function AdminFormationsAdd() {
                 </div>
                 <div>
                   <Label htmlFor="highlights">Points forts</Label>
-                  <Textarea
-                    id="highlights"
-                    value={formData.highlights[0]}
-                    onChange={(e) => handleArrayChange(e as React.ChangeEvent<HTMLInputElement>, 0, 'highlights')}
-                    className="mt-1"
-                  />
+                  {formData.highlights?.map((highlight, index) => (
+                    <div key={index} className="flex items-center space-x-2 mt-1">
+                      <Input
+                        type="text"
+                        value={highlight}
+                        onChange={(e) => handleArrayChange(e, index, 'highlights')}
+                        className="flex-grow"
+                      />
+                      {formData.highlights && formData.highlights.length > 1 && (
+                        <Button type="button" onClick={() => handleRemoveHighlight(index)} variant="destructive">
+                          Supprimer
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                  <Button type="button" onClick={handleAddHighlight} variant="outline" className="mt-2">
+                    Ajouter un point fort
+                  </Button>
                 </div>
                 <Button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 transition-colors">
                   {loading ? 'Ajout...' : <><PlusCircle className="h-4 w-4 mr-2" />Ajouter</>}
