@@ -2,91 +2,91 @@
   "projects": [
     {
       "id": 1,
-      "title": "Pont Moderne",
-      "description": "Conception d'un pont durable et esthétiquement plaisant, intégrant des techniques de construction modernes pour maximiser la résistance et la longévité.",
+      "title": "Application de suivie de chantier",
+      "description": "création d'une application de suivie de chantier gravé sur un cd avec java",
       "category": "civil",
-      "technologies": ["AutoCAD", "Robot Structural Analysis", "Concrete", "Steel"],
+      "technologies": ["Java", "SQLite", "JavaFX"],
       "status": "completed",
       "image": "/images/projects/pont.jpg",
       "link": "https://example.com/pont-moderne",
-      "startDate": "2022-01-01",
-      "endDate": "2023-06-01",
+      "startDate": "2025-02-01",
+      "endDate": "2025-02-15",
       "highlights": [
-        "Réduction de 20% des coûts de matériaux grâce à une optimisation structurelle",
-        "Conception conforme aux normes parasismiques les plus récentes",
-        "Utilisation de matériaux recyclés pour une empreinte environnementale réduite"
+        "Interface utilisateur intuitive",
+        "Fonctionnalités de suivi en temps réel",
+        "Rapports générés automatiquement"
       ],
-      "detailedDescription": "Ce projet consistait en la conception complète d'un pont routier, de l'étude de faisabilité à la modélisation 3D détaillée. L'accent a été mis sur la durabilité et l'efficacité, en utilisant des simulations informatiques avancées pour tester la résistance sous diverses contraintes (vent, charges dynamiques, séismes)."
+      "detailedDescription": "création d'une application de suivie de chantier gravé sur un cd avec java"
     },
     {
       "id": 2,
-      "title": "Modèle Mathématique de Prédiction",
-      "description": "Développement d'un modèle de régression non linéaire pour prédire l'évolution des ressources hydriques dans une région aride.",
-      "category": "math",
-      "technologies": ["Python", "SciPy", "Pandas", "MATLAB"],
+      "title": "Construction d'une cloture dans un chantier",
+      "description": "suivi de la construction d'une clôture dans un chantier dans la ville de Yaoundé  ",
+      "category": "civi",
+      "technologies": ["AutoCAD", "Excel", "MS Project"],
       "status": "current",
       "image": "/images/projects/optimization.jpg",
-      "startDate": "2023-03-01",
+      "startDate": "2025-03-01",
       "endDate": null,
       "highlights": [
-        "Précision de prédiction améliorée de 15% par rapport aux modèles existants",
-        "Interface utilisateur simplifiée pour les non-experts",
-        "Intégration de données satellitaires et climatiques"
+        "Utilisation de logiciels de modélisation pour la planification",
+        "Gestion efficace des ressources et du temps",
+        "Coordination avec les équipes sur le terrain"
       ],
-      "detailedDescription": "Ce projet en cours vise à créer un outil de prédiction fiable pour les gestionnaires d'eau. Le modèle analyse de multiples variables (précipitations, évaporation, humidité du sol) pour anticiper les périodes de sécheresse et optimiser l'allocation des ressources. L'utilisation de bibliothèques Python a permis un prototypage rapide et une grande flexibilité."
+      "detailedDescription": "suivi de la construction d'une clôture dans un chantier dans la ville de Yaoundé......"
     },
     {
       "id": 3,
-      "title": "Système de Forage Autonome",
-      "description": "Conception d'un système de forage d'eau potable semi-automatisé pour les communautés rurales.",
-      "category": "technical",
-      "technologies": ["Arduino", "SolidWorks", "PLC", "Capteurs de pression"],
-      "status": "completed",
+      "title": "Système de développement urbain",
+      "description": "modélisation d'un système de développement urbain afin d'optimiser l'exploitation des zones urbaines , faciliter les trafics",
+      "category": "civil",
+      "technologies": ["AutoCAD", "Revit", "Civil 3D", "GIS"],
+      "status": "En cours",
       "image": "/images/projects/forage.jpg",
       "link": "https://example.com/forage",
-      "startDate": "2021-09-01",
-      "endDate": "2022-03-31",
+      "startDate": "2025-09-01",
+      "endDate": null,
       "highlights": [
-        "Réduction du temps de forage de 40%",
-        "Système de sécurité intégré pour prévenir les accidents",
-        "Formation des habitants à l'utilisation et à la maintenance de base"
+        "Planification urbaine intégrée",
+        "Optimisation des infrastructures de transport",
+        "Gestion durable des ressources"
       ],
-      "detailedDescription": "En réponse à la problématique d'accès à l'eau en milieu rural, ce projet a abouti à la création d'un prototype de machine de forage facile à transporter et à opérer. Le système utilise une logique programmable pour réguler la vitesse et la pression, garantissant un forage efficace et sûr, même dans des sols difficiles."
+      "detailedDescription": "modélisation d'un système de développement urbain afin d'optimiser l'exploitation des zones urbaines , faciliter les trafics"
     },
     {
       "id": 4,
-      "title": "Analyse de Données de Transport Urbain",
-      "description": "Utilisation de l'IA pour optimiser les itinéraires de moto-taxis et réduire les embouteillages.",
-      "category": "technical",
-      "technologies": ["Python", "TensorFlow", "QGIS", "GPS"],
+      "title": "Creation d'un goudron",
+      "description": "creation d'un goudron adapté aux Zones urbaines et leurs contraintes cas du Cameroun ",
+      "category": "civil",
+      "technologies": [],
       "status": "paused",
       "image": "/images/projects/drainage.jpg",
       "startDate": "2023-11-01",
       "endDate": null,
       "highlights": [
-        "Algorithme de routage dynamique",
-        "Modèle de prédiction des flux de trafic",
-        "Visualisation cartographique des données"
+        "Analyse des matériaux locaux pour la formulation du goudron",
+        "Tests de durabilité et de performance sous différentes conditions climatiques",
+        "Collaboration avec des experts en génie civil et en environnement"
       ],
-      "detailedDescription": "Ce projet vise à résoudre le problème de la congestion urbaine en analysant en temps réel les données de géolocalisation des moto-taxis. Le but est de proposer des itinéraires alternatifs aux conducteurs et de mieux organiser les services pour diminuer les temps d'attente. Le projet est actuellement en pause pour des raisons de financement."
+      "detailedDescription": "creation d'un goudron adapté aux Zones urbaines et leurs contraintes cas du Cameroun "
     },
     {
       "id": 5,
-      "title": "Rénovation de Bâtiment Historique",
-      "description": "Projet de réhabilitation d'une ancienne structure en un espace communautaire moderne tout en préservant son intégrité architecturale.",
-      "category": "civil",
-      "technologies": ["BIM", "SketchUp", "Autodesk Revit", "Matériaux traditionnels"],
-      "status": "completed",
+      "title": "Gestion des ordure",
+      "description": "gestion des ordures dans les zones urbaines.",
+      "category": "technical",
+      "technologies": [],
+      "status": "En cours",
       "image": "/images/projects/drainage.jpg",
       "link": "https://example.com/renovation",
-      "startDate": "2020-05-01",
-      "endDate": "2021-12-20",
+      "startDate": "2025-09-01",
+      "endDate": null,
       "highlights": [
-        "Préservation des façades et éléments d'origine",
-        "Mise à niveau des systèmes d'isolation et d'énergie",
-        "Respect strict des réglementations en matière de conservation"
+        "Évaluation des systèmes actuels de gestion des déchets",
+        "Proposition de solutions innovantes pour le tri et le recyclage",
+        "Sensibilisation communautaire et programmes éducatifs"
       ],
-      "detailedDescription": "Un projet passionnant qui a combiné génie civil et respect du patrimoine. Nous avons utilisé la modélisation 3D pour planifier la rénovation de l'intérieur, en insérant des systèmes modernes (plomberie, électricité, chauffage) sans altérer la structure historique. La coordination avec les artisans spécialisés a été cruciale pour la réussite du projet."
+      "detailedDescription": " gestion des ordures dans les zones urbaines."
     }
   ],
   "categories": [

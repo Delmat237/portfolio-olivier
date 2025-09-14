@@ -144,14 +144,14 @@ export default function Hero() {
                 {/* Liens sociaux */}
               <div className="flex gap-4 pt-6">
                 <Link 
-                  href="https://linkedin.com/in/olivier-mogonel" 
+                  href="https://linkedin.com/in/olivier-mg-11" 
                   target="_blank"
                   className="w-12 h-12 bg-gray-200/50 dark:bg-gray-800/50 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full flex items-center justify-center transition-all duration-200 hover:-translate-y-1 group"
                 >
                   <Linkedin className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-sky-600" />
                 </Link>
                 <Link 
-                  href="https://github.com/olivier-mogonel" 
+                  href="https://github.com/Delmat237" 
                   target="_blank"
                   className="w-12 h-12 bg-gray-200/50 dark:bg-gray-800/50 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full flex items-center justify-center transition-all duration-200 hover:-translate-y-1 group"
                 >

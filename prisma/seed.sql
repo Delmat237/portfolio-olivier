@@ -328,112 +328,97 @@ VALUES (
     );
 ---
 -- Insertion des projets (Project)
--- INSERT INTO "Project" (
---         "title",
---         "description",
---         "category",
---         "technologies",
---         "status",
---         "image",
---         "link",
---         "startDate",
---         "endDate",
---         "highlights",
---         "detailedDescription",
---         "createdAt",
---         "updatedAt"
---     )
--- VALUES (
---         'Analyse structurelle d''un pont en béton armé',
---         'Conception et calcul de résistance pour un pont de 30 mètres de portée, incluant l''analyse des charges permanentes et d''exploitation.',
---         'civil',
---         '{AutoCAD, Calculs manuels, Béton armé, RDM}',
---         'completed',
---         '/images/projects/pont.jpg',
---         NULL,
---         '2023-09-01T00:00:00Z',
---         '2023-12-31T00:00:00Z',
---         '{"Dimensionnement des poutres principales", "Calcul des charges et surcharges", "Vérification de la stabilité", "Plans d''exécution détaillés"}',
---         'Ce projet académique consistait à concevoir et calculer un pont en béton armé pour franchir une rivière. Le travail comprenait l''étude géotechnique, le dimensionnement des fondations, le calcul des poutres et du tablier, ainsi que la vérification de tous les états limites selon les normes en vigueur.',
---         NOW(),
---         NOW()
---     ),
---     (
---         'Résolution d''équations différentielles par méthodes numériques',
---         'Développement d''algorithmes pour résoudre des systèmes d''équations différentielles appliqués à la modélisation de structures dynamiques.',
---         'math',
---         '{Python, MATLAB, Analyse numérique, Scipy}',
---         'current',
---         '/images/projects/equations.jpg',
---         NULL,
---         '2024-01-01T00:00:00Z',
---         NULL,
---         '{"Méthodes de Runge-Kutta", "Approximations par différences finies", "Validation des résultats", "Interface graphique interactive"}',
---         'Projet de recherche sur l''application des méthodes numériques avancées pour résoudre des équations différentielles ordinaires et partielles. Focus sur les applications en génie civil, notamment la dynamique des structures et l''analyse vibratoire.',
---         NOW(),
---         NOW()
---     ),
---     (
---         'Système de gestion des eaux pluviales urbaines',
---         'Conception d''un système de drainage pour un quartier résidentiel, incluant dimensionnement des caniveaux et bassins de rétention.',
---         'civil',
---         '{Hydraulique urbaine, Topographie, AutoCAD, Calculs hydrologiques}',
---         'completed',
---         '/images/projects/drainage.jpg',
---         NULL,
---         '2023-03-01T00:00:00Z',
---         '2023-06-30T00:00:00Z',
---         '{"Étude hydrologique du bassin versant", "Dimensionnement des ouvrages", "Calcul des débits de pointe", "Plans de réseaux"}',
---         'Étude complète d''aménagement urbain pour la gestion des eaux pluviales d''un quartier de 500 habitants. Analyse des précipitations, calcul des débits, dimensionnement des canalisations et conception de bassins de rétention.',
---         NOW(),
---         NOW()
---     ),
---     (
---         'Optimisation topologique de structures',
---         'Application d''algorithmes d''optimisation pour réduire le poids des structures tout en maintenant leur résistance mécanique.',
---         'math',
---         '{Python, Optimisation, Éléments finis, Algorithmes génétiques}',
---         'current',
---         '/images/projects/optimization.jpg',
---         NULL,
---         '2024-02-01T00:00:00Z',
---         NULL,
---         '{"Algorithmes d''optimisation topologique", "Analyse par éléments finis", "Réduction de masse de 30%", "Validation expérimentale"}',
---         'Recherche sur l''optimisation de la forme et de la topologie des structures en béton armé et acier. Utilisation d''algorithmes bio-inspirés pour minimiser le poids tout en respectant les contraintes de résistance et de déformation.',
---         NOW(),
---         NOW()
---     ),
---     (
---         'Installation électrique d''un bâtiment résidentiel',
---         'Conception et réalisation complète de l''installation électrique d''une maison individuelle selon les normes camerounaises.',
---         'technical',
---         '{Électricité bâtiment, Schémas électriques, Normes NF C 15-100, Câblage}',
---         'completed',
---         '/images/projects/electrical.jpg',
---         NULL,
---         '2023-07-01T00:00:00Z',
---         '2023-08-31T00:00:00Z',
---         '{"Schémas unifilaires et multifilaires", "Dimensionnement des protections", "Mise en œuvre pratique", "Respect des normes de sécurité"}',
---         'Projet pratique de conception et réalisation d''une installation électrique domestique. Travail complet depuis l''étude des besoins jusqu''à la mise en service, en passant par les calculs de dimensionnement et la réalisation des schémas.',
---         NOW(),
---         NOW()
---     ),
---     (
---         'Forage et aménagement de puits',
---         'Conception et supervision d''un projet de forage d''eau potable pour une communauté rurale, incluant l''étude hydrogéologique.',
---         'technical',
---         '{Hydrogéologie, Techniques de forage, Pompage, Traitement d''eau}',
---         'completed',
---         '/images/projects/forage.jpg',
---         NULL,
---         '2023-05-01T00:00:00Z',
---         '2023-07-31T00:00:00Z',
---         '{"Étude hydrogéologique préalable", "Supervision du forage", "Installation de la pompe", "Formation des utilisateurs"}',
---         'Projet communautaire de réalisation d''un forage d''eau potable pour un village de 200 habitants. Coordination avec les entreprises de forage, supervision technique, et mise en place d''un système de maintenance durable.',
---         NOW(),
---         NOW()
---     );
----
+INSERT INTO "Project" (
+         "title",
+         "description",
+         "category",
+         "technologies",
+         "status",
+         "image",
+         "link",
+         "startDate",
+         "endDate",
+         "highlights",
+         "detailedDescription",
+         "createdAt",
+         "updatedAt"
+     )
+ VALUES (
+         'Application de suivie de chantier',
+         'création d''une application de suivie de chantier gravé sur un cd avec java',
+         'civil',
+         '{"Java", "SQLite", "JavaFX"}',
+         'completed',
+         '/images/projects/pont.jpg',
+         'https://example.com/pont-moderne',
+         '2025-02-01T00:00:00.000Z',
+         '2025-02-15T00:00:00.000Z',
+         '{"Interface utilisateur intuitive", "Fonctionnalités de suivi en temps réel", "Rapports générés automatiquement"}',
+         'création d''une application de suivie de chantier gravé sur un cd avec java',
+         '2025-09-14T07:42:42.000Z',
+         '2025-09-14T07:42:42.000Z'
+     ),
+     (
+         'Construction d''une cloture dans un chantier',
+         'suivi de la construction d''une clôture dans un chantier dans la ville de Yaoundé  ',
+         'civi',
+         '{"AutoCAD", "Excel", "MS Project"}',
+         'current',
+         '/images/projects/optimization.jpg',
+         NULL,
+         '2025-03-01T00:00:00.000Z',
+         NULL,
+         '{"Utilisation de logiciels de modélisation pour la planification", "Gestion efficace des ressources et du temps", "Coordination avec les équipes sur le terrain"}',
+         'suivi de la construction d''une clôture dans un chantier dans la ville de Yaoundé......',
+         '2025-09-14T07:42:42.000Z',
+         '2025-09-14T07:42:42.000Z'
+     ),
+     (
+         'Système de développement urbain',
+         'modélisation d''un système de développement urbain afin d''optimiser l''exploitation des zones urbaines , faciliter les trafics',
+         'civil',
+         '{"AutoCAD", "Revit", "Civil 3D", "GIS"}',
+         'En cours',
+         '/images/projects/forage.jpg',
+         'https://example.com/forage',
+         '2025-09-01T00:00:00.000Z',
+         NULL,
+         '{"Planification urbaine intégrée", "Optimisation des infrastructures de transport", "Gestion durable des ressources"}',
+         'modélisation d''un système de développement urbain afin d''optimiser l''exploitation des zones urbaines , faciliter les trafics',
+         '2025-09-14T07:42:42.000Z',
+         '2025-09-14T07:42:42.000Z'
+     ),
+     (
+         'Creation d''un goudron',
+         'creation d''un goudron adapté aux Zones urbaines et leurs contraintes cas du Cameroun ',
+         'civil',
+         '{}',
+         'paused',
+         '/images/projects/drainage.jpg',
+         NULL,
+         '2023-11-01T00:00:00.000Z',
+         NULL,
+         '{"Analyse des matériaux locaux pour la formulation du goudron", "Tests de durabilité et de performance sous différentes conditions climatiques", "Collaboration avec des experts en génie civil et en environnement"}',
+         'creation d''un goudron adapté aux Zones urbaines et leurs contraintes cas du Cameroun ',
+         '2025-09-14T07:42:42.000Z',
+         '2025-09-14T07:42:42.000Z'
+     ),
+     (
+         'Gestion des ordure',
+         'gestion des ordures dans les zones urbaines.',
+         'technical',
+         '{}',
+         'En cours',
+         '/images/projects/drainage.jpg',
+         'https://example.com/renovation',
+         '2025-09-01T00:00:00.000Z',
+         NULL,
+         '{"Évaluation des systèmes actuels de gestion des déchets", "Proposition de solutions innovantes pour le tri et le recyclage", "Sensibilisation communautaire et programmes éducatifs"}',
+         'gestion des ordures dans les zones urbaines.',
+         '2025-09-14T07:42:42.000Z',
+         '2025-09-14T07:42:42.000Z'
+     );
+-
 -- Insertion des formations (Education)
 INSERT INTO "Education" (
         "period",
@@ -578,6 +563,13 @@ INSERT INTO "User" (
 VALUES (
         'admin@gmail.com',
         '$2b$10$KBEpwx4JdQQu76xPSFW2lO/1eADQaFzB/tK6QplbryHbgol0fnadC',
+        'Admin',
+        NOW(),
+        NOW()
+    ),
+    (
+        'oliviermg@gmail.com',
+        '$2a$10$wT3rM.6S.d4b1nB.j4fF2.P5V8e2BvH7/3yR/a.rF/9pG4d5jK/jO',
         'Admin',
         NOW(),
         NOW()
