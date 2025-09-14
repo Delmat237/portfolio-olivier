@@ -4,8 +4,7 @@
 import Image from 'next/image'
 import AnimatedSection from '@/components/shared/AnimatedSection'
 import { getImagePath } from '@/config/images' // Importer la config
-import { Briefcase, BookOpen, MapPin, Calendar, ArrowRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+
 
 export default function About() {
   return (

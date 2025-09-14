@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Mail, Plus } from 'lucide-react';
+import { ArrowLeft, Mail } from 'lucide-react';
 
 interface Message {
   id: number;

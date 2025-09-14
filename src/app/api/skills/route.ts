@@ -58,8 +58,8 @@ export async function POST(request: NextRequest) {
 
     if (body.categoryId) {
       // Création d'une compétence
-      const { id, categoryId, ...restOfValidatedData } = skillSchema.parse(body);
-
+      const {  id,categoryId, ...restOfValidatedData } = skillSchema.parse(body);
+      console.log('Données validées pour la compétence :', { id, ...restOfValidatedData });
       const newSkill = await prisma.skill.create({
         data: {
           ...restOfValidatedData,
