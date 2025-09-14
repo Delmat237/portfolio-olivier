@@ -34,11 +34,11 @@ export async function GET() {
     });
 
     return NextResponse.json(skillCategories);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Erreur lors de la récupération des compétences :', error);
 
     // Vérifie si l'erreur est liée à l'initialisation de Prisma ou à une connexion échouée
-    if (error.name === 'PrismaClientInitializationError' || error.message.includes('Can\'t reach database server')) {
+    if (error instanceof Error && (error.name === 'PrismaClientInitializationError' || error.message.includes('Can\'t reach database server'))) {
       console.warn('Base de données inaccessible, utilisation des données statiques.');
       return NextResponse.json(skillsData.skillCategories); // Retourne les catégories statiques
     }
@@ -56,14 +56,14 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Déterminer si c'est une catégorie ou une compétence
     if (body.categoryId) {
       // Création d'une compétence
-      const validatedSkill = skillSchema.parse(body);
+      const { id, categoryId, ...restOfValidatedData } = skillSchema.parse(body);
+
       const newSkill = await prisma.skill.create({
         data: {
-          ...validatedSkill,
-          category: { connect: { id: validatedSkill.categoryId } },
+          ...restOfValidatedData,
+          category: { connect: { id: categoryId } },
         },
       });
       return NextResponse.json(
@@ -81,12 +81,12 @@ export async function POST(request: NextRequest) {
         { status: 201 }
       );
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Erreur lors de la création :', error);
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { message: 'Données invalides', errors: error.errors },
+        { message: 'Données invalides', issues: error.issues },
         { status: 400 }
       );
     }
@@ -113,12 +113,13 @@ export async function PUT(request: NextRequest) {
 
     if (body.categoryId) {
       // Mise à jour d'une compétence
-      const validatedSkill = skillSchema.parse(body);
+      const { id, categoryId, ...restOfValidatedData } = skillSchema.parse(body);
+      
       const updatedSkill = await prisma.skill.update({
-        where: { id: body.id },
+        where: { id: id },
         data: {
-          ...validatedSkill,
-          category: { connect: { id: validatedSkill.categoryId } },
+          ...restOfValidatedData,
+          category: { connect: { id: categoryId } },
         },
       });
       return NextResponse.json(
@@ -137,17 +138,17 @@ export async function PUT(request: NextRequest) {
         { status: 200 }
       );
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Erreur lors de la mise à jour :', error);
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { message: 'Données invalides', errors: error.errors },
+        { message: 'Données invalides', issues: error.issues },
         { status: 400 }
       );
     }
 
-    if (error.code === 'P2025') {
+    if (error instanceof Error && 'code' in error && error.code === 'P2025') {
       return NextResponse.json(
         { message: 'Élément non trouvé' },
         { status: 404 }
@@ -174,7 +175,6 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Vérifier si c'est une catégorie ou une compétence (approximation basée sur l'ID)
     const category = await prisma.skillCategory.findUnique({ where: { id } });
     if (category) {
       await prisma.skillCategory.delete({ where: { id } });
@@ -197,10 +197,10 @@ export async function DELETE(request: NextRequest) {
       { message: 'Élément non trouvé' },
       { status: 404 }
     );
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Erreur lors de la suppression :', error);
 
-    if (error.code === 'P2025') {
+    if (error instanceof Error && 'code' in error && error.code === 'P2025') {
       return NextResponse.json(
         { message: 'Élément non trouvé' },
         { status: 404 }

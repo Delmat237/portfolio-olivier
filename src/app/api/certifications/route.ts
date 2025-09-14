@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
-import certificationsData from '@/data/certifications.json'; // Import des données statiques
+import certificationsData from '@/data/certifications.json';
 
 const prisma = new PrismaClient();
 
@@ -12,10 +12,11 @@ const certificationSchema = z.object({
   description: z.string().min(1, 'La description est requise'),
   type: z.string().min(1, 'Le type est requis'),
   institution: z.string().min(1, 'L\'institution est requise'),
+  // Le type est un nombre dans Zod, nous le convertirons en string pour Prisma
   year: z.number().min(1900, 'Année invalide').max(new Date().getFullYear(), 'Année future non autorisée'),
   location: z.string().min(1, 'L\'emplacement est requis'),
   image: z.string().optional(),
-  icon: z.string().min(1, 'L\'icône est requise'), // Ajout de ce champ
+  icon: z.string().min(1, 'L\'icône est requise'),
   color: z.string().min(1, 'La couleur est requise'),
   verified: z.boolean().optional(),
 });
@@ -33,7 +34,7 @@ export async function GET() {
         location: true,
         color: true,
         verified: true,
-        icon: true, // Ajout de ce champ
+        icon: true,
       },
       orderBy: {
         year: 'desc',
@@ -44,10 +45,9 @@ export async function GET() {
   } catch (error: unknown) {
     console.error('Erreur lors de la récupération des certifications :', error);
 
-    // Vérifie si l'erreur est liée à l'initialisation de Prisma ou à une connexion échouée
     if (error instanceof Error && error.name === 'PrismaClientInitializationError' || error instanceof Error && error.message.includes('Can\'t reach database server')) {
       console.warn('Base de données inaccessible, utilisation des données statiques.');
-      return NextResponse.json(certificationsData); // Retourne les données statiques
+      return NextResponse.json(certificationsData);
     }
 
     return NextResponse.json(
@@ -64,13 +64,15 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validatedData = certificationSchema.parse(body);
 
-    // Destructurer l'objet pour retirer l'id avant de le passer à l'opération create
-    const { id, ...dataWithoutId } = validatedData;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, year, ...dataWithoutId } = validatedData;
 
     const newCertification = await prisma.certification.create({
       data: {
-        ...dataWithoutId, // Passe les données sans l'id
-        verified: dataWithoutId.verified || false, // Défaut à false si non spécifié
+        ...dataWithoutId,
+        // Conversion du nombre 'year' en chaîne de caractères pour Prisma
+        year: year.toString(),
+        verified: dataWithoutId.verified || false,
       },
     });
 
@@ -109,14 +111,15 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // Destructurer l'objet pour retirer l'id avant de le passer à l'opération update
-    const { id, ...dataWithoutId } = validatedData;
+    const { id, year, ...dataWithoutId } = validatedData;
 
     const updatedCertification = await prisma.certification.update({
       where: { id: id },
       data: {
         ...dataWithoutId,
-        verified: dataWithoutId.verified || false, // Défaut à false si non spécifié
+        // Conversion du nombre 'year' en chaîne de caractères pour Prisma
+        year: year.toString(),
+        verified: dataWithoutId.verified || false,
       },
     });
 
@@ -127,8 +130,7 @@ export async function PUT(request: NextRequest) {
   } catch (error: unknown) {
     console.error('Erreur lors de la mise à jour de la certification :', error);
 
-    // Correction du problème de typage : on vérifie si l'objet 'error' a une propriété 'code'
-    if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2025') {
+    if (error instanceof Error && 'code' in error && error.code === 'P2025') {
       return NextResponse.json(
         { message: 'Certification non trouvée' },
         { status: 404 }
@@ -166,8 +168,7 @@ export async function DELETE(request: NextRequest) {
   } catch (error: unknown) {
     console.error('Erreur lors de la suppression de la certification :', error);
 
-    // Correction du problème de typage : on vérifie si l'objet 'error' a une propriété 'code'
-    if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2025') {
+    if (error instanceof Error && 'code' in error && error.code === 'P2025') {
       return NextResponse.json(
         { message: 'Certification non trouvée' },
         { status: 404 }

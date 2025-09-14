@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@/generated/prisma/client';
 import { z } from 'zod';
-import { ZodError } from 'zod';
 
 const prisma = new PrismaClient();
 
@@ -14,6 +13,7 @@ const contactSchema = z.object({
 });
 
 const educationSchema = z.object({
+  // CORRECTION : L'ID est un nombre dans le schéma pour correspondre à la base de données
   id: z.number().optional(),
   period: z.string().min(1, 'La période est requise'),
   title: z.string().min(1, 'Le titre est requis'),
@@ -31,18 +31,16 @@ export async function POST(request: NextRequest) {
     const validatedData = contactSchema.parse(body);
     const { name, email, subject, message } = validatedData;
 
-    // Configuration du transporteur email
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
       secure: false,
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS, // Mot de passe d'application Gmail
+        pass: process.env.EMAIL_PASS,
       },
     });
 
-    // Template HTML de l'email
     const htmlTemplate = `
       <!DOCTYPE html>
       <html>
@@ -76,7 +74,6 @@ export async function POST(request: NextRequest) {
       </html>
     `;
 
-    // Options de l'email
     const mailOptions = {
       from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
       to: 'Oliviermg10@gmail.com',
@@ -85,21 +82,14 @@ export async function POST(request: NextRequest) {
       replyTo: email,
     };
 
-    // Envoi de l'email
     await transporter.sendMail(mailOptions);
 
     return NextResponse.json(
       { message: 'Email envoyé avec succès' },
       { status: 200 }
     );
-  } catch (error: unknown) { // Ajout de : unknown pour un typage explicite
+  } catch (error) {
     console.error('Error sending email:', error);
-    if (error instanceof ZodError) { // ZodError est un type Zod spécifique
-        return NextResponse.json(
-            { message: 'Données invalides', issues: error.issues }, // Correction: 'issues' au lieu de 'errors'
-            { status: 400 }
-        );
-    }
     return NextResponse.json(
       { message: 'Erreur lors de l\'envoi de l\'email' },
       { status: 500 }
@@ -107,7 +97,44 @@ export async function POST(request: NextRequest) {
   }
 }
 
+export async function PUT(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const validatedData = educationSchema.parse(body);
 
+    // CORRECTION : Supprimez le fallback string qui causait l'erreur
+    const updatedEducation = await prisma.education.update({
+      where: { id: validatedData.id },
+      data: validatedData,
+    });
+
+    return NextResponse.json({
+      message: 'Formation mise à jour avec succès',
+      data: updatedEducation,
+    });
+  } catch (error) {
+    console.error('Error updating education:', error);
+
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { message: 'Données invalides', errors: error.issues },
+        { status: 400 }
+      );
+    }
+
+    if (error instanceof Error && 'code' in error && error.code === 'P2025') {
+      return NextResponse.json(
+        { message: 'Formation non trouvée' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      { message: 'Erreur lors de la mise à jour' },
+      { status: 500 }
+    );
+  }
+}
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -121,18 +148,18 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
+    // CORRECTION : Convertit l'ID de string à number avant de l'utiliser
     await prisma.education.delete({
-      where: { id },
+      where: { id: Number(id) },
     });
 
     return NextResponse.json({
       message: 'Formation supprimée avec succès',
     });
-  } catch (error: unknown) { // Ajout de : unknown
+  } catch (error) {
     console.error('Error deleting education:', error);
 
-    // Correction: Garde de type pour vérifier 'code'
-    if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2025') {
+    if (error instanceof Error && 'code' in error && error.code === 'P2025') {
       return NextResponse.json(
         { message: 'Formation non trouvée' },
         { status: 404 }

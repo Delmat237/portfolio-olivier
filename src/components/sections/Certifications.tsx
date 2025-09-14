@@ -5,6 +5,7 @@ import { Download, ExternalLink, Calendar, Building } from 'lucide-react';
 import AnimatedSection from '@/components/shared/AnimatedSection';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import React from 'react'; // Importez React pour utiliser React.ElementType
 
 interface Certification {
   id: number;
@@ -17,7 +18,8 @@ interface Certification {
   image: string;
   color: string;
   verified: boolean;
-  icon?: React.ComponentType<unknown>;
+  // CORRECTION : Définition du type de l'icône comme un élément React
+  icon?: React.ElementType;
 }
 
 export default function Certifications() {
