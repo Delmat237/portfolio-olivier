@@ -6,6 +6,10 @@ import { Button } from '@/components/ui/button';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { ArrowLeft, PlusCircle } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 interface Skill {
   categoryId: number;
@@ -27,7 +31,7 @@ export default function AdminCompetencesAdd() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: name === 'level' ? Number(value) : value }));
+    setFormData((prev) => ({ ...prev, [name]: name === 'level' || name === 'categoryId' ? Number(value) : value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,77 +52,88 @@ export default function AdminCompetencesAdd() {
       setError(
         err instanceof Error
           ? `Erreur lors de l'ajout : ${err.message}`
-          : 'Erreur lors de l ajout.'
+          : 'Erreur lors de l\'ajout.'
       );
     } finally {
       setLoading(false);
     }
   };
 
+  const handleBack = () => router.push('/admin/competences');
+
   return (
     <ProtectedRoute>
-      <div className="p-6">
-        <div className="flex justify-between mb-6">
-          <h1 className="text-2xl font-bold">Ajouter une Compétence</h1>
-          <Button onClick={() => router.push('/admin/competences')}>Retour</Button>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6 sm:p-10">
+        <div className="max-w-xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">Ajouter une Compétence</h1>
+            <Button onClick={handleBack} variant="outline" className="text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Retour
+            </Button>
+          </div>
+          <Card className="bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">Nouvelle Compétence</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {error && <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>}
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <Label htmlFor="categoryId">ID Catégorie</Label>
+                  <Input
+                    id="categoryId"
+                    type="number"
+                    name="categoryId"
+                    value={formData.categoryId}
+                    onChange={handleChange}
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="name">Nom</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="level">Niveau (0-100)</Label>
+                  <Input
+                    id="level"
+                    type="number"
+                    name="level"
+                    value={formData.level}
+                    onChange={handleChange}
+                    min="0"
+                    max="100"
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    className="mt-1"
+                  />
+                </div>
+                <Button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 transition-colors">
+                  {loading ? 'Ajout...' : <><PlusCircle className="h-4 w-4 mr-2" />Ajouter</>}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
         </div>
-        <Card>
-          <CardHeader>
-            <CardTitle>Nouvelle Compétence</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {error && <p className="text-red-500 mb-4">{error}</p>}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">ID Catégorie</label>
-                <input
-                  type="number"
-                  name="categoryId"
-                  value={formData.categoryId}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Nom</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Niveau (0-100)</label>
-                <input
-                  type="number"
-                  name="level"
-                  value={formData.level}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                  min="0"
-                  max="100"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Description</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                />
-              </div>
-              <Button type="submit" disabled={loading}>
-                {loading ? 'Ajout...' : 'Ajouter'}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
       </div>
     </ProtectedRoute>
   );

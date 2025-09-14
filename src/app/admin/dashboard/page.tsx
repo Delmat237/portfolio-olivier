@@ -25,28 +25,28 @@ const statsCards = [
     value: '1,234',
     change: '+12%',
     icon: Users,
-    color: 'text-blue-600 bg-blue-100'
+    color: 'text-sky-600 bg-sky-100 dark:text-sky-400 dark:bg-sky-900'
   },
   {
     title: 'Messages reçus',
     value: '45',
     change: '+8%',
     icon: Mail,
-    color: 'text-green-600 bg-green-100'
+    color: 'text-teal-600 bg-teal-100 dark:text-teal-400 dark:bg-teal-900'
   },
   {
     title: 'Projets actifs',
     value: '3',
     change: '0%',
     icon: Briefcase,
-    color: 'text-purple-600 bg-purple-100'
+    color: 'text-indigo-600 bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900'
   },
   {
     title: 'Formations',
     value: '6',
     change: '+1',
     icon: BookOpen,
-    color: 'text-orange-600 bg-orange-100'
+    color: 'text-orange-600 bg-orange-100 dark:text-orange-400 dark:bg-orange-900'
   }
 ];
 
@@ -98,10 +98,10 @@ export default function AdminDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement du tableau de bord...</p>
+          <div className="w-12 h-12 border-4 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Chargement du tableau de bord...</p>
         </div>
       </div>
     );
@@ -109,22 +109,22 @@ export default function AdminDashboard() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200">
+        <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
           <div className="px-6 py-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                   Tableau de bord
                 </h1>
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-400">
                   Bienvenue, {user?.name || 'Administrateur'}
                 </p>
               </div>
               
-              <div className="flex items-center gap-4">
-                <span className="text-gray-500 text-sm">
+              <div className="flex items-center gap-4 mt-2 sm:mt-0">
+                <span className="text-gray-500 text-sm hidden md:block">
                   {new Date().toLocaleDateString('fr-FR', {
                     weekday: 'long',
                     year: 'numeric',
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
                   onClick={handleLogout}
                   variant="outline"
                   size="sm"
-                  className="text-red-600 border-red-200 hover:bg-red-50"
+                  className="text-red-600 dark:text-red-400 border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900 transition-colors"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   Déconnexion
@@ -152,20 +152,20 @@ export default function AdminDashboard() {
           {/* Statistiques */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {statsCards.map((stat, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow duration-200">
+              <Card key={index} className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">{stat.title}</p>
-                      <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{stat.title}</p>
+                      <p className="text-3xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
                       <div className="flex items-center gap-1 mt-2">
                         <TrendingUp className="w-4 h-4 text-green-500" />
-                        <span className="text-sm text-green-600">{stat.change}</span>
+                        <span className="text-sm font-medium text-green-600 dark:text-green-400">{stat.change}</span>
                       </div>
                     </div>
                     
-                    <div className={`w-12 h-12 rounded-lg ${stat.color} flex items-center justify-center`}>
-                      <stat.icon className="w-6 h-6" />
+                    <div className={`w-14 h-14 rounded-full ${stat.color} flex items-center justify-center`}>
+                      <stat.icon className="w-7 h-7" />
                     </div>
                   </div>
                 </CardContent>
@@ -175,25 +175,25 @@ export default function AdminDashboard() {
 
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Activités récentes */}
-            <Card>
+            <Card className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 rounded-xl shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5" />
+                <CardTitle className="flex items-center gap-2 text-xl font-bold">
+                  <Calendar className="w-5 h-5 text-sky-600 dark:text-sky-400" />
                   Activités récentes
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {recentActivities.map((activity) => (
-                    <div key={activity.id} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
-                      <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                        <activity.icon className="w-5 h-5 text-gray-600" />
+                    <div key={activity.id} className="flex items-center gap-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-xl transition-transform transform hover:translate-x-1">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white dark:bg-gray-900 shadow">
+                        <activity.icon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                           {activity.content}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
                           {activity.time}
                         </p>
                       </div>
@@ -204,42 +204,42 @@ export default function AdminDashboard() {
             </Card>
 
             {/* Actions rapides */}
-            <Card>
+            <Card className="bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 rounded-xl shadow-lg">
               <CardHeader>
-                <CardTitle>Actions rapides</CardTitle>
+                <CardTitle className="text-xl font-bold">Actions rapides</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
                   <Button
                     onClick={() => handleNavigate('formations')}
-                    className="h-20 flex-col bg-primary-50 text-primary-700 hover:bg-primary-100 border border-primary-200"
+                    className="h-24 flex-col justify-center items-center rounded-xl bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-900 transition-colors border-2 border-sky-200 dark:border-sky-800"
                   >
-                    <BookOpen className="w-6 h-6 mb-2" />
-                    <span className="text-sm">Gérer Formation</span>
+                    <BookOpen className="w-7 h-7 mb-2" />
+                    <span className="text-sm font-semibold">Gérer Formations</span>
                   </Button>
                   
                   <Button
                     onClick={() => handleNavigate('projets')}
-                    className="h-20 flex-col bg-green-50 text-green-700 hover:bg-green-100 border border-green-200"
+                    className="h-24 flex-col justify-center items-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400 hover:bg-teal-100 dark:hover:bg-teal-900 transition-colors border-2 border-teal-200 dark:border-teal-800"
                   >
-                    <Briefcase className="w-6 h-6 mb-2" />
-                    <span className="text-sm">Gérer Projets</span>
+                    <Briefcase className="w-7 h-7 mb-2" />
+                    <span className="text-sm font-semibold">Gérer Projets</span>
                   </Button>
                   
                   <Button
                     onClick={() => handleNavigate('competences')}
-                    className="h-20 flex-col bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200"
+                    className="h-24 flex-col justify-center items-center rounded-xl bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900 transition-colors border-2 border-indigo-200 dark:border-indigo-800"
                   >
-                    <Settings className="w-6 h-6 mb-2" />
-                    <span className="text-sm">Compétences</span>
+                    <Settings className="w-7 h-7 mb-2" />
+                    <span className="text-sm font-semibold">Compétences</span>
                   </Button>
                   
                   <Button
                     onClick={() => handleNavigate('messages')}
-                    className="h-20 flex-col bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200"
+                    className="h-24 flex-col justify-center items-center rounded-xl bg-orange-50 text-orange-700 dark:bg-orange-950 dark:text-orange-400 hover:bg-orange-100 dark:hover:bg-orange-900 transition-colors border-2 border-orange-200 dark:border-orange-800"
                   >
-                    <Mail className="w-6 h-6 mb-2" />
-                    <span className="text-sm">Messages</span>
+                    <Mail className="w-7 h-7 mb-2" />
+                    <span className="text-sm font-semibold">Messages</span>
                   </Button>
                 </div>
               </CardContent>

@@ -6,6 +6,10 @@ import { Button } from '@/components/ui/button';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { ArrowLeft, Mail, Send } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 interface Message {
   email: string;
@@ -44,54 +48,63 @@ export default function AdminMessagesAdd() {
       setError(
         err instanceof Error
           ? `Erreur lors de l'ajout : ${err.message}`
-          : 'Erreur lors de l ajout.'
+          : 'Erreur lors de l\'ajout.'
       );
     } finally {
       setLoading(false);
     }
   };
 
+  const handleBack = () => router.push('/admin/messages');
+
   return (
     <ProtectedRoute>
-      <div className="p-6">
-        <div className="flex justify-between mb-6">
-          <h1 className="text-2xl font-bold">Ajouter un Message</h1>
-          <Button onClick={() => router.push('/admin/messages')}>Retour</Button>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6 sm:p-10">
+        <div className="max-w-xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">Ajouter un Message</h1>
+            <Button onClick={handleBack} variant="outline" className="text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Retour
+            </Button>
+          </div>
+          <Card className="bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">Nouveau Message</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {error && <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>}
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="content">Contenu</Label>
+                  <Textarea
+                    id="content"
+                    name="content"
+                    value={formData.content}
+                    onChange={handleChange}
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <Button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 transition-colors">
+                  {loading ? 'Ajout...' : <><Send className="h-4 w-4 mr-2" />Envoyer</>}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
         </div>
-        <Card>
-          <CardHeader>
-            <CardTitle>Nouveau Message</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {error && <p className="text-red-500 mb-4">{error}</p>}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Contenu</label>
-                <textarea
-                  name="content"
-                  value={formData.content}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                  required
-                />
-              </div>
-              <Button type="submit" disabled={loading}>
-                {loading ? 'Ajout...' : 'Ajouter'}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
       </div>
     </ProtectedRoute>
   );

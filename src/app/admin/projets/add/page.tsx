@@ -6,6 +6,10 @@ import { Button } from '@/components/ui/button';
 import ProtectedRoute from '@/components/shared/ProtectedRoute';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { ArrowLeft, PlusCircle } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 interface Project {
   title: string;
@@ -58,97 +62,110 @@ export default function AdminProjetsAdd() {
       setError(
         err instanceof Error
           ? `Erreur lors de l'ajout : ${err.message}`
-          : 'Erreur lors de l ajout.'
+          : 'Erreur lors de l\'ajout.'
       );
     } finally {
       setLoading(false);
     }
   };
 
+  const handleBack = () => router.push('/admin/projets');
+
   return (
     <ProtectedRoute>
-      <div className="p-6">
-        <div className="flex justify-between mb-6">
-          <h1 className="text-2xl font-bold">Ajouter un Projet</h1>
-          <Button onClick={() => router.push('/admin/projets')}>Retour</Button>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6 sm:p-10">
+        <div className="max-w-xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">Ajouter un Projet</h1>
+            <Button onClick={handleBack} variant="outline" className="text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Retour
+            </Button>
+          </div>
+          <Card className="bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">Nouveau Projet</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {error && <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>}
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <Label htmlFor="title">Titre</Label>
+                  <Input
+                    id="title"
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="category">Catégorie</Label>
+                  <Input
+                    id="category"
+                    type="text"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="technologies">Technologies</Label>
+                  <Input
+                    id="technologies"
+                    type="text"
+                    value={formData.technologies[0]}
+                    onChange={(e) => handleArrayChange(e as React.ChangeEvent<HTMLInputElement>, 0, 'technologies')}
+                    className="mt-1"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="status">Statut</Label>
+                  <Input
+                    id="status"
+                    type="text"
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="image">Image (URL)</Label>
+                  <Input
+                    id="image"
+                    type="text"
+                    name="image"
+                    value={formData.image}
+                    onChange={handleChange}
+                    required
+                    className="mt-1"
+                  />
+                </div>
+                <Button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 transition-colors">
+                  {loading ? 'Ajout...' : <><PlusCircle className="h-4 w-4 mr-2" />Ajouter</>}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
         </div>
-        <Card>
-          <CardHeader>
-            <CardTitle>Nouveau Projet</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {error && <p className="text-red-500 mb-4">{error}</p>}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Titre</label>
-                <input
-                  type="text"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Description</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Catégorie</label>
-                <input
-                  type="text"
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Technologies</label>
-                <input
-                  type="text"
-                  value={formData.technologies[0]}
-                  onChange={(e) => handleArrayChange(e, 0, 'technologies')}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Statut</label>
-                <input
-                  type="text"
-                  name="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Image</label>
-                <input
-                  type="text"
-                  name="image"
-                  value={formData.image}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                  required
-                />
-              </div>
-              <Button type="submit" disabled={loading}>
-                {loading ? 'Ajout...' : 'Ajouter'}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
       </div>
     </ProtectedRoute>
   );

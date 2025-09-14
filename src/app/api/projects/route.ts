@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 import projectsData from '@/data/projects.json'; // Import des données statiques
-import { UnknownTypedSql } from '@prisma/client/runtime/client';
 
 const prisma = new PrismaClient();
 
@@ -46,7 +45,7 @@ export async function GET() {
     const categories = await prisma.projectCategory.findMany(); // Supposant une table pour les catégories
 
     return NextResponse.json({ projects, categories }); // Renvoie un objet avec projets et catégories
-  } catch (error: unKnown) {
+  } catch (error: unknown) {
     console.error('Erreur lors de la récupération des projets :', error);
 
     // Vérifie si l'erreur est liée à l'initialisation de Prisma ou à une connexion échouée

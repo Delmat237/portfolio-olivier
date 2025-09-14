@@ -143,21 +143,21 @@ export default function Hero() {
                 </Button>
               </div>
 
-              {/* Liens sociaux */}
+                {/* Liens sociaux */}
               <div className="flex gap-4 pt-6">
                 <Link 
                   href="https://linkedin.com/in/olivier-mogonel" 
                   target="_blank"
-                  className="w-12 h-12 bg-gray-100 hover:bg-primary-100 rounded-lg flex items-center justify-center transition-all duration-200 hover:-translate-y-1 group"
+                  className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all duration-200 hover:-translate-y-1 group"
                 >
-                  <Linkedin className="w-5 h-5 text-gray-600 group-hover:text-primary-600" />
+                  <Linkedin className="w-5 h-5 text-white" />
                 </Link>
                 <Link 
                   href="https://github.com/olivier-mogonel" 
                   target="_blank"
-                  className="w-12 h-12 bg-gray-100 hover:bg-primary-100 rounded-lg flex items-center justify-center transition-all duration-200 hover:-translate-y-1 group"
+                  className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all duration-200 hover:-translate-y-1 group"
                 >
-                  <Github className="w-5 h-5 text-gray-600 group-hover:text-primary-600" />
+                  <Github className="w-5 h-5 text-white" />
                 </Link>
               </div>
             </div>
@@ -182,15 +182,15 @@ export default function Hero() {
                 />
               </div>
 
-              {/* Badges flottants */}
+             {/* Badges flottants */}
               <div className="absolute -top-4 -right-4 bg-white rounded-full p-3 shadow-lg border border-gray-100 animate-bounce">
-                <div className="w-6 h-6 bg-gradient-to-r from-primary-500 to-civil-500 rounded-full flex items-center justify-center">
+                <div className="w-6 h-6 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-xs font-bold">GC</span>
                 </div>
               </div>
               
               <div className="absolute -bottom-4 -left-4 bg-white rounded-full p-3 shadow-lg border border-gray-100 animate-bounce delay-500">
-                <div className="w-6 h-6 bg-gradient-to-r from-math-500 to-primary-500 rounded-full flex items-center justify-center">
+                <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-violet-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-xs font-bold">M²</span>
                 </div>
               </div>
@@ -202,10 +202,10 @@ export default function Hero() {
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <button
             onClick={scrollToAbout}
-            className="flex flex-col items-center gap-2 text-gray-400 hover:text-primary-500 transition-colors duration-200"
+            className="flex flex-col items-center gap-2 text-gray-200 hover:text-white transition-colors duration-200"
             aria-label="Faire défiler vers le bas"
           >
-            <span className="text-sm fg-purple-800">Découvrir</span>
+            <span className="text-sm">Découvrir</span>
             <ChevronDown className="w-6 h-6" />
           </button>
         </div>

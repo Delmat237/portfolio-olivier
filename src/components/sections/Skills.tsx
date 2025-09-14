@@ -80,18 +80,18 @@ export default function Skills() {
 
   const activeSkillCategory = skillCategories.find((cat) => cat.id === activeCategory);
 
-  if (loading) return <div className="text-center py-10">Chargement...</div>;
-  if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
+  if (loading) return <div className="text-center py-10 text-gray-500 dark:text-gray-400">Chargement...</div>;
+  if (error) return <div className="text-center py-10 text-red-500 dark:text-red-400">{error}</div>;
 
   return (
-    <section id="skills" className="section-padding bg-sky-600">
+    <section id="skills" className="section-padding bg-gray-50 dark:bg-gray-950">
       <div className="container-custom">
         <AnimatedSection>
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Mes <span className="gradient-text">Compétences</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+              Mes <span className="gradient-text bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-blue-600">Compétences</span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
               Un ensemble de compétences techniques et transversales acquises au fil
               de ma formation et de mes expériences pratiques.
             </p>
@@ -102,7 +102,7 @@ export default function Skills() {
           {/* Navigation des catégories */}
           <AnimatedSection>
             <div className="lg:col-span-1">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Catégories</h3>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">Catégories</h3>
               <div className="space-y-2">
                 {skillCategories.map((category) => {
                   const IconComponent = iconMap[category.icon];
@@ -112,24 +112,24 @@ export default function Skills() {
                       onClick={() => setActiveCategory(category.id)}
                       className={`w-full text-left p-4 rounded-lg transition-all duration-200 group ${
                         activeCategory === category.id
-                          ? 'bg-primary-50 border-2 border-primary-200'
-                          : 'bg-gray-50 hover:bg-gray-100 border-2 border-transparent'
+                          ? 'bg-sky-100 dark:bg-sky-900 border-2 border-sky-300 dark:border-sky-700'
+                          : 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border-2 border-transparent'
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-r ${category.color}`}>
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-r from-sky-500 to-blue-600`}>
                           {IconComponent && <IconComponent className="w-5 h-5 text-white" />}
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-medium text-gray-900 group-hover:text-primary-600">
+                          <h4 className={`font-medium ${activeCategory === category.id ? 'text-sky-800 dark:text-sky-300' : 'text-gray-900 dark:text-gray-100'}`}>
                             {category.title}
                           </h4>
-                          <p className="text-sm text-gray-600">
+                          <p className={`text-sm ${activeCategory === category.id ? 'text-sky-600 dark:text-sky-400' : 'text-gray-600 dark:text-gray-400'}`}>
                             {category.skills.length} compétences
                           </p>
                         </div>
-                        <ChevronRight className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${
-                          activeCategory === category.id ? 'rotate-90' : 'group-hover:translate-x-1'
+                        <ChevronRight className={`w-4 h-4 transition-transform duration-200 ${
+                          activeCategory === category.id ? 'text-sky-600 dark:text-sky-400 rotate-90' : 'text-gray-400 group-hover:translate-x-1'
                         }`} />
                       </div>
                     </button>
@@ -145,16 +145,16 @@ export default function Skills() {
               {activeSkillCategory && (
                 <div className="space-y-6">
                   {/* En-tête de catégorie */}
-                  <div className={`p-6 rounded-xl bg-gradient-to-r ${activeSkillCategory.bgColor} border border-gray-100`}>
+                  <div className={`p-6 rounded-xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700`}>
                     <div className="flex items-center gap-4">
-                      <div className={`w-16 h-16 rounded-xl flex items-center justify-center bg-gradient-to-r ${activeSkillCategory.color}`}>
+                      <div className={`w-16 h-16 rounded-xl flex items-center justify-center bg-gradient-to-r from-sky-500 to-blue-600`}>
                         {iconMap[activeSkillCategory.icon] && React.createElement(iconMap[activeSkillCategory.icon], { className: "w-8 h-8 text-white" })}
                       </div>
                       <div>
-                        <h3 className="text-2xl font-bold text-gray-900">
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                           {activeSkillCategory.title}
                         </h3>
-                        <p className="text-gray-600 mt-1">
+                        <p className="text-gray-600 dark:text-gray-400 mt-1">
                           {activeSkillCategory.skills.length} compétences dans ce domaine
                         </p>
                       </div>
@@ -166,32 +166,32 @@ export default function Skills() {
                     {activeSkillCategory.skills.map((skill, index) => (
                       <Card
                         key={index}
-                        className="hover:shadow-lg transition-all duration-300 cursor-pointer"
+                        className="bg-white dark:bg-gray-800 hover:shadow-lg transition-all duration-300 cursor-pointer"
                         onMouseEnter={() => setHoveredSkill(skill.name)}
                         onMouseLeave={() => setHoveredSkill(null)}
                       >
                         <CardContent className="p-6">
                           <div className="space-y-4">
                             <div className="flex items-center justify-between">
-                              <h4 className="text-lg font-semibold text-gray-900">
+                              <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                                 {skill.name}
                               </h4>
-                              <span className="text-sm font-medium text-primary-600">
+                              <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
                                 {skill.level}%
                               </span>
                             </div>
 
                             {/* Barre de progression */}
-                            <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                               <div
-                                className={`h-2 rounded-full bg-gradient-to-r ${activeSkillCategory.color} transition-all duration-1000 ease-out`}
+                                className={`h-2 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 transition-all duration-1000 ease-out`}
                                 style={{
                                   width: hoveredSkill === skill.name ? `${skill.level}%` : '0%',
                                 }}
                               ></div>
                             </div>
 
-                            <p className="text-gray-600 text-sm">
+                            <p className="text-gray-600 dark:text-gray-400 text-sm">
                               {skill.description}
                             </p>
                           </div>
@@ -209,36 +209,36 @@ export default function Skills() {
         <AnimatedSection>
           <div className="mt-20">
             <div className="text-center mb-12">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Certifications & <span className="gradient-text">Diplômes</span>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                Certifications & <span className="gradient-text bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-blue-600">Diplômes</span>
               </h3>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                 Reconnaissance officielle de mes compétences et qualifications académiques.
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
               {certifications.map((cert, index) => (
-                <Card key={index} className="text-center hover:shadow-xl transition-all duration-300 group">
+                <Card key={index} className="text-center bg-white dark:bg-gray-800 hover:shadow-xl transition-all duration-300 group">
                   <CardContent className="p-6">
-                    <div className="w-16 h-16 bg-gradient-to-r from-primary-500 to-civil-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <div className="w-16 h-16 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                       <BookOpen className="w-8 h-8 text-white" />
                     </div>
 
-                    <span className="px-3 py-1 bg-primary-100 text-primary-700 text-xs font-medium rounded-full">
+                    <span className="px-3 py-1 bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300 text-xs font-medium rounded-full">
                       {cert.type}
                     </span>
 
-                    <h4 className="text-lg font-bold text-gray-900 mt-4 mb-2">
+                    <h4 className="text-lg font-bold text-gray-900 dark:text-gray-100 mt-4 mb-2">
                       {cert.name}
                     </h4>
 
-                    <p className="text-gray-600 text-sm mb-2">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
                       {cert.institution}
                     </p>
 
-                    <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                      <span className="w-2 h-2 bg-primary-500 rounded-full"></span>
+                    <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                      <span className="w-2 h-2 bg-sky-500 rounded-full"></span>
                       {cert.year}
                     </div>
                   </CardContent>
@@ -250,47 +250,47 @@ export default function Skills() {
 
         {/* Statistiques des compétences */}
         <AnimatedSection>
-          <div className="mt-16 p-8 bg-gradient-to-r from-slate-50 to-blue-50 rounded-2xl">
+          <div className="mt-16 p-8 bg-sky-100 dark:bg-sky-950 rounded-2xl">
             <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Aperçu de mes <span className="gradient-text">Compétences</span>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                Aperçu de mes <span className="gradient-text bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-blue-600">Compétences</span>
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-400">
                 Répartition de mon expertise par domaine
               </p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className="text-center p-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-civil-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                <div className="w-16 h-16 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Building className="w-8 h-8 text-white" />
                 </div>
-                <div className="text-2xl font-bold text-civil-600 mb-1">77%</div>
-                <div className="text-sm text-gray-600">Génie Civil</div>
+                <div className="text-2xl font-bold text-sky-600 dark:text-sky-400 mb-1">77%</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Génie Civil</div>
               </div>
 
               <div className="text-center p-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-math-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                <div className="w-16 h-16 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Calculator className="w-8 h-8 text-white" />
                 </div>
-                <div className="text-2xl font-bold text-math-600 mb-1">80%</div>
-                <div className="text-sm text-gray-600">Mathématiques</div>
+                <div className="text-2xl font-bold text-sky-600 dark:text-sky-400 mb-1">80%</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Mathématiques</div>
               </div>
 
               <div className="text-center p-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                <div className="w-16 h-16 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Wrench className="w-8 h-8 text-white" />
                 </div>
-                <div className="text-2xl font-bold text-orange-600 mb-1">72%</div>
-                <div className="text-sm text-gray-600">Technique</div>
+                <div className="text-2xl font-bold text-sky-600 dark:text-sky-400 mb-1">72%</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Technique</div>
               </div>
 
               <div className="text-center p-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                <div className="w-16 h-16 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Users className="w-8 h-8 text-white" />
                 </div>
-                <div className="text-2xl font-bold text-green-600 mb-1">81%</div>
-                <div className="text-sm text-gray-600">Transversales</div>
+                <div className="text-2xl font-bold text-sky-600 dark:text-sky-400 mb-1">81%</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Transversales</div>
               </div>
             </div>
           </div>
@@ -299,11 +299,11 @@ export default function Skills() {
         {/* Call to action */}
         <AnimatedSection>
           <div className="mt-16 text-center">
-            <div className="inline-flex items-center gap-2 p-6 bg-gradient-to-r from-primary-500 to-civil-500 rounded-2xl text-white">
-              <Zap className="w-6 h-6" />
+            <div className="inline-flex flex-col md:flex-row items-center gap-4 p-6 bg-sky-600 rounded-2xl text-white shadow-xl">
+              <Zap className="w-8 h-8" />
               <div>
-                <p className="text-lg font-semibold mb-1">Prêt pour de nouveaux défis</p>
-                <p className="text-primary-100">
+                <p className="text-xl font-semibold mb-1">Prêt pour de nouveaux défis</p>
+                <p className="text-sky-100">
                   Toujours en apprentissage, toujours en évolution
                 </p>
               </div>
