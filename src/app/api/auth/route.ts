@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
       // Générer le token JWT
       const token = jwt.sign(
         { email: user.email, name: user.name },
-        JWT_SECRET,
+        JWT_SECRET!,
         { expiresIn: '24h' }
       );
 
@@ -63,11 +63,14 @@ export async function POST(request: NextRequest) {
           name: user.name,
         },
         token,
-        expiresIn: 24 * 60 * 60 * 1000, // 24 heures en millisecondes
+        expiresIn: 24 * 60 * 60 * 1000,
       });
     } catch (dbError: unknown) {
       // Fallback si la base est inaccessible
-      if (dbError.name === 'PrismaClientInitializationError' || dbError.message.includes('Can\'t reach database server')) {
+      if (
+        (dbError instanceof Error && dbError.name === 'PrismaClientInitializationError') ||
+        String(dbError).includes('Can\'t reach database server')
+      ) {
         console.warn('Base de données inaccessible, utilisation des données statiques depuis .env.');
         if (email === process.env.ADMIN_EMAIL) {
           const isPasswordValid = await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH || '');
@@ -81,7 +84,7 @@ export async function POST(request: NextRequest) {
           // Générer le token JWT avec les données statiques
           const token = jwt.sign(
             { email: process.env.ADMIN_EMAIL, name: 'Utilisateur par défaut' },
-            JWT_SECRET,
+            JWT_SECRET!,
             { expiresIn: '24h' }
           );
 
@@ -92,7 +95,7 @@ export async function POST(request: NextRequest) {
               name: 'Utilisateur par défaut',
             },
             token,
-            expiresIn: 24 * 60 * 60 * 1000, // 24 heures en millisecondes
+            expiresIn: 24 * 60 * 60 * 1000,
           });
         }
         return NextResponse.json(
@@ -100,14 +103,14 @@ export async function POST(request: NextRequest) {
           { status: 401 }
         );
       }
-      throw dbError; // Relance l'erreur si ce n'est pas une erreur de connexion
+      throw dbError;
     }
   } catch (error) {
     console.error('Login error:', error);
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { message: 'Données invalides', errors: error.errors },
+        { message: 'Données invalides', errors: error.issues }, // Correction ici : 'issues' au lieu de 'errors'
         { status: 400 }
       );
     }

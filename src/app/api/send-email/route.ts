@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import { PrismaClient } from '@/generated/prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
+import { ZodError } from 'zod';
 
 const prisma = new PrismaClient();
 
@@ -13,7 +14,7 @@ const contactSchema = z.object({
 });
 
 const educationSchema = z.object({
-  id: z.string().optional(),
+  id: z.number().optional(),
   period: z.string().min(1, 'La période est requise'),
   title: z.string().min(1, 'Le titre est requis'),
   institutions: z.array(z.string()).min(1, 'Au moins une institution est requise'),
@@ -91,8 +92,14 @@ export async function POST(request: NextRequest) {
       { message: 'Email envoyé avec succès' },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: unknown) { // Ajout de : unknown pour un typage explicite
     console.error('Error sending email:', error);
+    if (error instanceof ZodError) { // ZodError est un type Zod spécifique
+        return NextResponse.json(
+            { message: 'Données invalides', issues: error.issues }, // Correction: 'issues' au lieu de 'errors'
+            { status: 400 }
+        );
+    }
     return NextResponse.json(
       { message: 'Erreur lors de l\'envoi de l\'email' },
       { status: 500 }
@@ -100,43 +107,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function PUT(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const validatedData = educationSchema.parse(body);
 
-    const updatedEducation = await prisma.education.update({
-      where: { id: validatedData.id || '' },
-      data: validatedData,
-    });
-
-    return NextResponse.json({
-      message: 'Formation mise à jour avec succès',
-      data: updatedEducation,
-    });
-  } catch (error) {
-    console.error('Error updating education:', error);
-
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { message: 'Données invalides', errors: error.errors },
-        { status: 400 }
-      );
-    }
-
-    if (error.code === 'P2025') {
-      return NextResponse.json(
-        { message: 'Formation non trouvée' },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json(
-      { message: 'Erreur lors de la mise à jour' },
-      { status: 500 }
-    );
-  }
-}
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -157,10 +128,11 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({
       message: 'Formation supprimée avec succès',
     });
-  } catch (error) {
+  } catch (error: unknown) { // Ajout de : unknown
     console.error('Error deleting education:', error);
 
-    if (error.code === 'P2025') {
+    // Correction: Garde de type pour vérifier 'code'
+    if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2025') {
       return NextResponse.json(
         { message: 'Formation non trouvée' },
         { status: 404 }

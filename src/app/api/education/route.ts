@@ -39,8 +39,8 @@ export async function GET() {
   } catch (error: unknown) {
     console.error('Erreur lors de la récupération des formations :', error);
 
-    // Vérifie si l'erreur est liée à l'initialisation de Prisma ou à une connexion échouée
-    if (error.name === 'PrismaClientInitializationError' || error.message.includes('Can\'t reach database server')) {
+    // Correction : Utilisation d'un garde de type pour vérifier que l'erreur est bien une instance de Error
+    if (error instanceof Error && (error.name === 'PrismaClientInitializationError' || error.message.includes('Can\'t reach database server'))) {
       console.warn('Base de données inaccessible, utilisation des données statiques.');
       return NextResponse.json(educationData); // Retourne les données statiques
     }
@@ -74,8 +74,9 @@ export async function POST(request: NextRequest) {
     console.error('Erreur lors de la création de la formation :', error);
 
     if (error instanceof z.ZodError) {
+      // Correction : Zod utilise la propriété 'issues' et non 'errors'
       return NextResponse.json(
-        { message: 'Données invalides', errors: error.errors },
+        { message: 'Données invalides', issues: error.issues },
         { status: 400 }
       );
     }
@@ -110,17 +111,11 @@ export async function PUT(request: NextRequest) {
       { message: 'Formation mise à jour avec succès', data: updatedEducation },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Erreur lors de la mise à jour de la formation :', error);
 
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { message: 'Données invalides', errors: error.errors },
-        { status: 400 }
-      );
-    }
-
-    if (error.code === 'P2025') {
+    // Correction : Utilisation d'un garde de type pour vérifier la propriété 'code'
+    if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2025') {
       return NextResponse.json(
         { message: 'Formation non trouvée' },
         { status: 404 }
@@ -155,10 +150,11 @@ export async function DELETE(request: NextRequest) {
       { message: 'Formation supprimée avec succès' },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Erreur lors de la suppression de la formation :', error);
 
-    if (error.code === 'P2025') {
+    // Correction : Utilisation d'un garde de type pour vérifier la propriété 'code'
+    if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'P2025') {
       return NextResponse.json(
         { message: 'Formation non trouvée' },
         { status: 404 }
